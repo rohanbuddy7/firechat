@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "928090603111",
+    "project_id": "firechat-73e91",
+    "storage_bucket": "firechat-73e91.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928090603111:android:a7ec3c0a131abc10269ec2",
+        "android_client_info": {
+          "package_name": "com.tribeone.firechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928090603111-fis8tnlkndo4m2k4121vb26qf0itn83d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuFW2TQh9O00nqjwwRVkTj-L9DRTkcIMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928090603111-fis8tnlkndo4m2k4121vb26qf0itn83d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

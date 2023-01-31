@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_5sdp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_chat_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_chat_pp_other"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@color/chat_other"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_chat_time_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_chat_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="Hi i am rohan this is a text. Lorem ipsum, or lipsum as it is sometimes known,"
+            android:textColor="@color/black"
+            android:background="@drawable/bg_chat_other"
+            android:padding="@dimen/_12sdp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_chat_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_30sdp"
+        android:layout_gravity="end"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_chat_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_chat_me"
+            android:padding="@dimen/_12sdp"
+            android:text="Lorem ipsum, or lipsum "/>
+
+    </LinearLayout>
+
+</LinearLayout>

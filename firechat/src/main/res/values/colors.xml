@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    <color name="chat_other">#F2F5F9</color>
+    <color name="chat_me">#065fd5</color>
+
+
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#2461EF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="off_white">#77FFFFFF</color>
+    <color name="blue_chip_color">#CFE2F3</color>
+    <color name="black">#000000</color>
+    <color name="dark_purple">#1E1826</color>
+    <color name="black_trans">#8B000000</color>
+    <color name="text_grey_color">#4E4E4E</color>
+    <color name="text_grey_med_color">#1B182299</color>
+    <color name="text_grey_light_color">#A3A3A3</color>
+    <color name="grey_extra_light_color">#E3E3E3</color>
+    <color name="lightdarkgrey">#787878</color>
+    <color name="darkgrey">#9A1B1822</color>
+    <color name="darkergrey">#1B1B1B</color>
+    <color name="grey">#f5f5f6</color>
+    <color name="grey1">#D8D8D8</color>
+    <color name="grey2">#ebebec</color>
+    <color name="grey3">#3c4655</color>
+    <color name="grey4">#99000000</color>
+    <color name="blue">#2461EF</color>
+    <color name="transparent">#00F5F5F6</color>
+    <color name="gray_transparent">#0A000000</color>
+    <color name="white_transparent">#80FFFFFF</color>
+    <color name="green">#0AAF60</color>
+    <color name="red">#CA5C52</color>
+    <color name="silver">#DFDFE4</color>
+    <color name="black_transparent">#72070707</color>
+    <color name="turquoise">#2602C6A0</color>
+    <color name="cerulean_blue">#0A5CE9</color>
+    <color name="coral">#F05252</color>
+    <color name="toolbar_background">#FFFFFFFF</color>
+    <color name="toolbar_border">#FFDFDFE4</color>
+    <color name="lightish_blue">#2D2C3F</color>
+    <color name="dark">#0A0A1E</color>
+    <color name="steel">#84859C</color>
+    <color name="mildred">#ffd9d9</color>
+    <color name="purple">#9B51E0</color>
+    <color name="yellow">#FECB4B</color>
+    <color name="lightyellow">#0DFECB4B</color>
+    <color name="lightblue">#512461EF</color>
+    <color name="lightblue1">#0D2461EF</color>
+
+    <color name="plusInnnerCard">#ebedf6</color>
+    <color name="plusInnnerCardNameBox">#e4e6ed</color>
+    <color name="plusInnnerCardMessageBox">#ebedf6</color>
+    <color name="matchesInnnerCard">#1B1822</color>
+    <color name="matchesInnnerCardNameBox">#2a2831</color>
+    <color name="matchesInnnerCardMessageBox">#38363f</color>
+    <color name="property_background">#f1f7f9</color>
+    <color name="client_background">#fff1f6</color>
+    <color name="chat_send">#e9effd</color>
+    <color name="chat_receive">#f5f5f6</color>
+    <color name="chat_toolbar">#F2F2F2</color>
+    <color name="subscription_unlock">#6AEC98</color>
+    <color name="subscription_lock">#F2F2F4</color>
+    <color name="subscription_lock_1">#D4D4D4</color>
+
+    <color name="owner_rental">#1968F7</color>
+    <color name="owner_resale">#DD5D59</color>
+    <color name="owner_card_main">#ebedf6</color>
+    <color name="owner_card_mini">#e4e6ed</color>
+    <color name="owner_card_black">#1e1826</color>
+
+    <color name="notes_text_color">#4D4D5C</color>
+    <color name="coral_pink">#FF5E75</color>
+    <color name="draft_color">#E9EFFD</color>
+
+    <!--SendBird Chat SDK custom colors-->
+    <color name="primary_500">#006BBD</color>
+    <color name="primary_400">#007CBD</color>
+    <color name="primary_300">#198DE4</color>
+    <color name="primary_200">#35A8FF</color>
+    <color name="primary_100">#85CAFF</color>
+    <color name="timeline_bg">#E9F5FF</color>
+    <color name="msg_bg_color">#D8E8FF</color>
+    <color name="secondary_500">#066858</color>
+    <color name="secondary_400">#027d69</color>
+    <color name="secondary_300">#198DE4</color>
+    <color name="secondary_200">#69c085</color>
+    <color name="secondary_100">#a8e2ab</color>
+    <color name="error_500">#9d091e</color>
+    <color name="error_400">#bf0711</color>
+    <color name="error_300">#de360b</color>
+    <color name="error_200">#f66161</color>
+    <color name="error_100">#fdaaaa</color>
+    <color name="background_700">#000000</color>
+    <color name="background_600">#161616</color>
+    <color name="background_500">#2c2c2c</color>
+    <color name="background_400">#393939</color>
+    <color name="background_300">#bdbdbd</color>
+    <color name="background_200">#e0e0e0</color>
+    <color name="background_100">#eeeeee</color>
+    <color name="background_50">#ffffff</color>
+    <color name="overlay_01">#8c000000</color>
+    <color name="overlay_02">#51000000</color>
+    <color name="onlight_01">#e1000000</color>
+    <color name="onlight_02">#80000000</color>
+    <color name="onlight_03">#61000000</color>
+    <color name="onlight_04">#1e000000</color>
+    <color name="ondark_01">#e1ffffff</color>
+    <color name="ondark_02">#80ffffff</color>
+    <color name="ondark_03">#61ffffff</color>
+    <color name="ondark_04">#1effffff</color>
+    <color name="information">#adc9ff</color>
+    <color name="purchase_card_bg_color">#EBEEF6</color>
+    <color name="base_purchase_bg_color">#E4E6EE</color>
+    <color name="visit_planned_bg_color">#78EDA9</color>
+    <color name="building_bg_greyish_color">#F5F5F6</color>
+    <color name="grey_text">#888888</color>
+
+
+</resources>

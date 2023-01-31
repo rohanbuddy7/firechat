@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/chatlistFragment">
+
+    <fragment
+        android:id="@+id/chatlistFragment"
+        android:name="com.tribeone.firechat.ui.chatlist.ChatlistFragment"
+        android:label="ChatlistFragment"
+        tools:layout="@layout/fragment_chatlist"/>
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.tribeone.firechat.ui.message.MessageFragment"
+        android:label="MessageFragment"
+        tools:layout="@layout/fragment_chat"/>
+</navigation>
