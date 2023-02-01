@@ -70,8 +70,7 @@ internal class MainActivity : BaseActivity() {
 
         FirebaseApp.initializeApp(this)
 
-        navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fl_root_container) as NavHostFragment
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_root_container) as NavHostFragment?
         navController = navHostFragment?.navController
 
         MyApplication.userId = userId
