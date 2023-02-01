@@ -7,7 +7,7 @@ Firechat is fast and easy to integrate messsaging android SDK which lets you cha
 - Create a project on android studio and firebase
 - Add dependencies of firebase in android project Gradle file, add google-services.json
 - Setup firestore, setup database server in test or production mode.
-- Give all permissions to read and write on Firestore
+- Give permissions to read and write on Firestore 
 - Enable Cloud Messaging API (Legacy) from firebase panel and copy the server token. Add it in your firestore like this:
 
         (key>cloud>serverKey=**your server token**)
@@ -49,7 +49,7 @@ private var variant = FireChatHelper.production
 private val otherUser = "**UNIQUE_USERID**"
 private val myUser = Users(
         id = "**UNIQUE_USERID**",
-        name = "Ramesh",
+        name = "Sandy",
         profilePicture = "**IMAGE_URL**"
     )
     
@@ -58,7 +58,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     setContentView(R.layout.activity_launch)
 
     FirebaseApp.initializeApp(this)
-    fire = FireChatHelper.getInstance(FireChatHelper.staging)
+    fire = FireChatHelper.getInstance(variant)
 
     setupNotification()
 
