@@ -1,4 +1,4 @@
-<h1> Firechat :rocket:</h1>
+<h1> Firechat :green_apple:</h1>
 Firechat is fast and easy to integrate messsaging framework which lets you chat with a user with easy to use interface
 
 
