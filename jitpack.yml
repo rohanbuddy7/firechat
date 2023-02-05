@@ -1,3 +1,3 @@
 install:
-  - FILE="-Dfile=firechat-release.aar"
+  - FILE="firechat-release.aar"
   - mvn install:install-file $FILE -Dpackaging=aar -DpomFile=pom-default.xml
