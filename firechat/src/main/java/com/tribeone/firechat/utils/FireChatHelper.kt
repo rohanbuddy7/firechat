@@ -1,14 +1,12 @@
 package com.tribeone.firechat.utils
 
 import android.app.Activity
-import android.content.Intent
 import android.widget.Toast
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.FirebaseFirestore
-import com.tribeone.firechat.model.FCM
 import com.tribeone.firechat.model.Users
-import com.tribeone.firechat.ui.main.MainActivity
+import com.tribeone.firechat.ui.main.FcHomeActivity
 
 class FireChatHelper private constructor() {
 
@@ -40,7 +38,7 @@ class FireChatHelper private constructor() {
             if(user.id.isNullOrEmpty()){
                 FireChatErrors.crashIt(FireChatErrors.USER_ID_NULL)
             }
-            MainActivity.openChat(user, activity, chatId)
+            FcHomeActivity.openChat(user, activity, chatId)
         }
     }
 
@@ -49,7 +47,7 @@ class FireChatHelper private constructor() {
             if(user.id.isNullOrEmpty()){
                 FireChatErrors.crashIt(FireChatErrors.USER_ID_NULL)
             }
-            MainActivity.startDistinctConversation(user, otherUserId, activity)
+            FcHomeActivity.startDistinctConversation(user, otherUserId, activity)
         }
     }
 

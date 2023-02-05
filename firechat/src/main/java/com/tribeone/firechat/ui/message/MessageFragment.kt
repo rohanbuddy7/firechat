@@ -20,14 +20,14 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot
 import com.tribeone.firechat.MyApplication
 import com.tribeone.firechat.MyApplication.Companion.messageFragmentVisible
-import com.tribeone.firechat.databinding.FragmentChatBinding
+import com.tribeone.firechat.databinding.FcFragmentChatBinding
 import com.tribeone.firechat.di.component.FragmentComponent
 import com.tribeone.firechat.model.ChatListResponse
 import com.tribeone.firechat.model.Message
 import com.tribeone.firechat.model.UpdateChatList
 import com.tribeone.firechat.ui.base.BaseFragment
 import com.tribeone.firechat.ui.chatlist.ChatlistFragment
-import com.tribeone.firechat.ui.main.MainActivity
+import com.tribeone.firechat.ui.main.FcHomeActivity
 import com.tribeone.firechat.utils.*
 
 @SuppressLint("LogNotTimber")
@@ -45,7 +45,7 @@ internal class MessageFragment : BaseFragment<ChatViewModel>(),
     private var startedNewChat: Boolean = false
     private var lastVisible: DocumentSnapshot? = null
     private var adapter: MessageAdapter? = null
-    private var binding: FragmentChatBinding? = null
+    private var binding: FcFragmentChatBinding? = null
     private var chatId: String? = null
     private var hasMore = false
     private var isLoading = false
@@ -67,7 +67,7 @@ internal class MessageFragment : BaseFragment<ChatViewModel>(),
         savedInstanceState: Bundle?
     ): View? {
         if (binding == null) {
-            binding = FragmentChatBinding.inflate(inflater, container, false)
+            binding = FcFragmentChatBinding.inflate(inflater, container, false)
         }
         return binding?.root
     }
@@ -174,7 +174,7 @@ internal class MessageFragment : BaseFragment<ChatViewModel>(),
             putString(Constants.Firestore.lastMessageId, recentMessage?.messageId)
         }
         setFragmentResult(MESSAGE_FRAGMENT_BACK, resultBundle)
-        (requireActivity() as MainActivity).onBackPressed()
+        (requireActivity() as FcHomeActivity).onBackPressed()
     }
 
     private fun sendMessage() {

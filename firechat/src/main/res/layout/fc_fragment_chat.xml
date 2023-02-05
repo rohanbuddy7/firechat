@@ -57,7 +57,7 @@
                 android:id="@+id/rv_chat"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/card_chat" />
+                tools:listitem="@layout/fc_card_chat" />
 
         </LinearLayout>
 

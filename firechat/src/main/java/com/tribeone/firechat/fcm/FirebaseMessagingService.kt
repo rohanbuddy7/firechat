@@ -1,34 +1,22 @@
 package com.tribeone.firechat.fcm
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
-import android.os.Build
-import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.tribeone.firechat.MyApplication
 import com.tribeone.firechat.MyApplication.Companion.userFCM
-import com.tribeone.firechat.R
-import com.tribeone.firechat.ui.main.MainActivity
 import com.tribeone.firechat.utils.Constants
-import com.tribeone.firechat.utils.Constants.FCM.CHANNEL_MESSAGE_RECEIVED
 import com.tribeone.firechat.utils.FireChatErrors
 import com.tribeone.firechat.utils.FireChatErrors.BUILD_VARIANT_NULL
 import com.tribeone.firechat.utils.FireChatHelper
 import org.json.JSONException
 import org.json.JSONObject
-import kotlin.random.Random
 
 
-internal class MyFirebaseMessagingService : FirebaseMessagingService() {
+internal class FirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)

@@ -14,13 +14,13 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.tribeone.firechat.MyApplication
 import com.tribeone.firechat.MyApplication.Companion.chatlistFragmentVisible
-import com.tribeone.firechat.databinding.FragmentChatlistBinding
+import com.tribeone.firechat.databinding.FcFragmentChatlistBinding
 import com.tribeone.firechat.di.component.FragmentComponent
 import com.tribeone.firechat.model.ChatListResponse
 import com.tribeone.firechat.model.UpdateChatList
 import com.tribeone.firechat.ui.base.BaseFragment
 import com.tribeone.firechat.ui.message.ChatViewModel
-import com.tribeone.firechat.ui.main.MainActivity
+import com.tribeone.firechat.ui.main.FcHomeActivity
 import com.tribeone.firechat.ui.message.MessageFragment
 import com.tribeone.firechat.utils.*
 import com.tribeone.firechat.utils.Constants.FCM.FIRECHAT_MESSAGE_SEEN
@@ -34,7 +34,7 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
 
     private var once: Boolean = true
     private var onceObserver: Boolean = true
-    private var binding: FragmentChatlistBinding? = null
+    private var binding: FcFragmentChatlistBinding? = null
     public var adapter: ChatlistAdapter? = null
     private var userId: String? = null
     private var chatId: String? = null
@@ -71,7 +71,7 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
         savedInstanceState: Bundle?
     ): View {
         if (binding == null) {
-            binding = FragmentChatlistBinding.inflate(layoutInflater, container, false)
+            binding = FcFragmentChatlistBinding.inflate(layoutInflater, container, false)
         }
         return binding!!.root
     }
@@ -95,11 +95,11 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
             binding?.rvChatlist?.adapter = adapter
 
             binding?.tvStartchat?.setOnClickListener {
-                (activity as MainActivity).showChat(null)
+                (activity as FcHomeActivity).showChat(null)
             }
 
             binding?.ivChatListBack?.setOnClickListener {
-                (requireActivity() as MainActivity).onBackPressed()
+                (requireActivity() as FcHomeActivity).onBackPressed()
             }
 
             binding?.pullToRefresh?.setOnRefreshListener {
@@ -189,7 +189,7 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
         if (chatId != null) {
             val chatListResponse = adapter?.getData()?.find { it?.chatId == chatId }
             chatListResponse?.let {
-                (activity as MainActivity).showChat(it)
+                (activity as FcHomeActivity).showChat(it)
                 chatId = null
             }
         }
@@ -202,7 +202,7 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
     }
 
     override fun onClick(position: Int, chatListResponse: ChatListResponse?) {
-        (activity as MainActivity).showChat(chatListResponse)
+        (activity as FcHomeActivity).showChat(chatListResponse)
     }
 
     private fun initBroadcastAndOthers() {

@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tribeone.firechat.MyApplication
 import com.tribeone.firechat.R
-import com.tribeone.firechat.databinding.CardChatBinding
-import com.tribeone.firechat.databinding.CardChatListBinding
+import com.tribeone.firechat.databinding.FcCardChatBinding
 import com.tribeone.firechat.model.Message
 import com.tribeone.firechat.ui.chatlist.ChatlistAdapter
 import com.tribeone.firechat.utils.ProfileUtils
@@ -26,7 +25,7 @@ internal class MessageAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemBinding =
-            CardChatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            FcCardChatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(itemBinding)
     }
 
@@ -45,7 +44,7 @@ internal class MessageAdapter(
         return data.size
     }
 
-    internal class ViewHolder(itemview: CardChatBinding) : RecyclerView.ViewHolder(itemview.root) {
+    internal class ViewHolder(itemview: FcCardChatBinding) : RecyclerView.ViewHolder(itemview.root) {
         private val llChatOther = itemview.llChatOther
         private val llChatMe = itemview.llChatMe
         private val tvChatOther = itemview.tvChatOther

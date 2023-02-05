@@ -3,6 +3,7 @@ package com.tribeone.firechat.ui.main
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,12 +23,12 @@ import com.tribeone.firechat.utils.FireChatErrors.BUILD_VARIANT_NULL
 import com.tribeone.firechat.utils.FireChatHelper
 
 
-internal class MainActivity : BaseActivity() {
+internal class FcHomeActivity : BaseActivity() {
 
     companion object {
 
         fun openChat(user: Users, activity: Activity, chatId: String? = null) {
-            val intent = Intent(activity, MainActivity::class.java)
+            val intent = Intent(activity, FcHomeActivity::class.java)
             val bundle = Bundle()
             bundle.putParcelable(Constants.Firestore.user, user)
             bundle.putString(Constants.Firestore.chatId, chatId)
@@ -37,7 +38,7 @@ internal class MainActivity : BaseActivity() {
         }
 
         fun startDistinctConversation(user: Users, otherUserId: String, activity: Activity) {
-            val intent = Intent(activity, MainActivity::class.java)
+            val intent = Intent(activity, FcHomeActivity::class.java)
             val bundle = Bundle()
             bundle.putParcelable(Constants.Firestore.user, user)
             bundle.putString(Constants.Firestore.otherUserId, otherUserId)
@@ -58,7 +59,7 @@ internal class MainActivity : BaseActivity() {
     private var navController: NavController? = null
 
     override fun provideLayoutId(): Int {
-        return R.layout.activity_main
+        return R.layout.fc_activity_main
     }
 
     override fun setupView() {
@@ -70,7 +71,23 @@ internal class MainActivity : BaseActivity() {
 
         FirebaseApp.initializeApp(this)
 
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_root_container) as NavHostFragment?
+        val x = if(supportFragmentManager == null) {
+            "1 null"
+        } else {
+            "1 notnull"
+        }
+
+        val y = if(supportFragmentManager.findFragmentById(R.id.fl_root_container) == null) {
+            "2 null"
+        } else {
+            "2 notnull"
+        }
+
+        Log.e("TAG", "setupViewzomb1: $x", )
+        Log.e("TAG", "setupViewzomb2: $y", )
+        Log.e("TAG", "abcde: $y", )
+
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_root_container) as NavHostFragment
         navController = navHostFragment?.navController
 
         MyApplication.userId = userId
@@ -99,7 +116,7 @@ internal class MainActivity : BaseActivity() {
         //showChat(null)
         val args = Bundle()
         args.putString(Constants.Firestore.userId, userid)
-        navController?.setGraph(R.navigation.navigation, args)
+        navController?.setGraph(R.navigation.fc_navigation, args)
 
 
         when (type) {

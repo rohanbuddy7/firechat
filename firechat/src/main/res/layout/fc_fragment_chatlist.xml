@@ -94,7 +94,7 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/card_chat_list" />
+                        tools:listitem="@layout/fc_card_chat_list" />
 
 
                 </LinearLayout>

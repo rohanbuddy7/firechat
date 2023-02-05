@@ -9,10 +9,10 @@
         android:id="@+id/chatlistFragment"
         android:name="com.tribeone.firechat.ui.chatlist.ChatlistFragment"
         android:label="ChatlistFragment"
-        tools:layout="@layout/fragment_chatlist"/>
+        tools:layout="@layout/fc_fragment_chatlist"/>
     <fragment
         android:id="@+id/messageFragment"
         android:name="com.tribeone.firechat.ui.message.MessageFragment"
         android:label="MessageFragment"
-        tools:layout="@layout/fragment_chat"/>
+        tools:layout="@layout/fc_fragment_chat"/>
 </navigation>
