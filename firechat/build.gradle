@@ -110,7 +110,7 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = "com.tribeone"
-                artifactId = "firechat"
+                artifactId = "firechat-release"
                 version = "1.0"
             }
             staging(MavenPublication) {
