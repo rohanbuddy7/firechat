@@ -23,9 +23,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        staging {
+        /*staging {
             minifyEnabled false
-        }
+        }*/
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -110,15 +110,15 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = "com.tribeone"
-                artifactId = "firechat-release"
+                artifactId = "firechat"
                 version = "1.0"
             }
-            staging(MavenPublication) {
+            /*staging(MavenPublication) {
                 from components.staging
                 groupId = "com.tribeone"
                 artifactId = "firechat-staging"
                 version = "1.0"
-            }
+            }*/
         }
     }
 }
