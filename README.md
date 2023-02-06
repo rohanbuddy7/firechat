@@ -1,10 +1,11 @@
 <h1> Firechat :green_apple:</h1>
-Firechat is fast and easy to integrate messsaging android SDK which lets you chat with a user with easy to use interface
+Firechat is fast and easy to integrate messsaging android SDK which lets you chat with a user with easy to use interface and all the data gets stored in its firebase project
 
 
 <h2>Prerequisite </h2>
 
 - Create a project on android studio and firebase
+- Enable view binding, add tools:replace="android:theme" in manifest of your app
 - Add dependencies of firebase in android project Gradle file, add google-services.json
 - Setup firestore, setup database server in test or production mode.
 - Give permissions to read and write on Firestore 
