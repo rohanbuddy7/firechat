@@ -1,5 +1,5 @@
 <h1> Firechat :green_apple:</h1>
-Firechat is fast and easy to integrate messsaging android SDK which lets you chat with a user with easy to use interface
+Firechat is fast and easy to integrate messsaging android SDK which lets you chat with a user with easy to use interface using firebase
 
 
 <h2>Prerequisite </h2>
