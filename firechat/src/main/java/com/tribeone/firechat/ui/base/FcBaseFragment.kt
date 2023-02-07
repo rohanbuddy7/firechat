@@ -1,18 +1,15 @@
 package com.tribeone.firechat.ui.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import com.tribeone.firechat.MyApplication
-import com.tribeone.firechat.di.component.DaggerFragmentComponent
-import com.tribeone.firechat.di.component.FragmentComponent
-import com.tribeone.firechat.di.module.FragmentModule
+import com.tribeone.firechat.di.component.DaggerFcFragmentComponent
+import com.tribeone.firechat.di.component.FcFragmentComponent
+import com.tribeone.firechat.di.module.FcFragmentModule
 import javax.inject.Inject
 
-internal abstract class BaseFragment<VM: BaseViewModel>: Fragment() {
+internal abstract class FcBaseFragment<VM: FcBaseViewModel>: Fragment() {
 
     @Inject
     lateinit var viewModel: VM
@@ -33,10 +30,10 @@ internal abstract class BaseFragment<VM: BaseViewModel>: Fragment() {
     }
 
     private fun buildFragmentComponent() =
-        DaggerFragmentComponent
+        DaggerFcFragmentComponent
             .builder()
-            .applicationComponent((requireContext().applicationContext as MyApplication).applicationComponent)
-            .fragmentModule(FragmentModule(this, setBuildVariant()))
+            .fcApplicationComponent((requireContext().applicationContext as MyApplication).fcApplicationComponent)
+            .fcFragmentModule(FcFragmentModule(this, setBuildVariant()))
             .build()
 
 
@@ -46,7 +43,7 @@ internal abstract class BaseFragment<VM: BaseViewModel>: Fragment() {
 
     protected abstract fun setupView()
 
-    protected abstract fun injectDependencies(fragment: FragmentComponent)
+    protected abstract fun injectDependencies(fcFragment: FcFragmentComponent)
 
     protected abstract fun setupObservers()
 

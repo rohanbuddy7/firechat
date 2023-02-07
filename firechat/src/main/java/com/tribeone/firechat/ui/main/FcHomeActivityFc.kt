@@ -14,8 +14,8 @@ import com.tribeone.firechat.MyApplication
 import com.tribeone.firechat.R
 import com.tribeone.firechat.model.ChatListResponse
 import com.tribeone.firechat.model.Users
-import com.tribeone.firechat.ui.base.BaseActivity
-import com.tribeone.firechat.ui.message.MessageFragment.Companion.CHAT_LIST_RESPONSE
+import com.tribeone.firechat.ui.base.FcBaseActivity
+import com.tribeone.firechat.ui.message.FcMessageFragmentFc.Companion.CHAT_LIST_RESPONSE
 import com.tribeone.firechat.utils.Constants
 import com.tribeone.firechat.utils.Constants.Firestore.userid
 import com.tribeone.firechat.utils.FireChatErrors
@@ -23,12 +23,12 @@ import com.tribeone.firechat.utils.FireChatErrors.BUILD_VARIANT_NULL
 import com.tribeone.firechat.utils.FireChatHelper
 
 
-internal class FcHomeActivity : BaseActivity() {
+internal class FcHomeActivityFc : FcBaseActivity() {
 
     companion object {
 
         fun openChat(user: Users, activity: Activity, chatId: String? = null) {
-            val intent = Intent(activity, FcHomeActivity::class.java)
+            val intent = Intent(activity, FcHomeActivityFc::class.java)
             val bundle = Bundle()
             bundle.putParcelable(Constants.Firestore.user, user)
             bundle.putString(Constants.Firestore.chatId, chatId)
@@ -38,7 +38,7 @@ internal class FcHomeActivity : BaseActivity() {
         }
 
         fun startDistinctConversation(user: Users, otherUserId: String, activity: Activity) {
-            val intent = Intent(activity, FcHomeActivity::class.java)
+            val intent = Intent(activity, FcHomeActivityFc::class.java)
             val bundle = Bundle()
             bundle.putParcelable(Constants.Firestore.user, user)
             bundle.putString(Constants.Firestore.otherUserId, otherUserId)

@@ -9,12 +9,12 @@ import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.*
 import com.tribeone.firechat.MyApplication
 import com.tribeone.firechat.di.Request.*
-import com.tribeone.firechat.di.network.NetworkService
+import com.tribeone.firechat.di.network.FcNetworkService
 import com.tribeone.firechat.model.ChatListResponse
 import com.tribeone.firechat.model.Message
 import com.tribeone.firechat.model.SeenAndDecision
 import com.tribeone.firechat.model.Users
-import com.tribeone.firechat.ui.base.BaseViewModel
+import com.tribeone.firechat.ui.base.FcBaseViewModel
 import com.tribeone.firechat.utils.Constants
 import com.tribeone.firechat.utils.Constants.FCM.FIRECHAT_MESSAGE_SEEN
 import com.tribeone.firechat.utils.Constants.FCM.FIRECHAT_NEW_MESSAGE
@@ -32,10 +32,10 @@ import kotlin.random.Random
 
 @SuppressLint("LogNotTimber")
 //@Inject constructor
-internal class ChatViewModel(
+internal class FcChatViewModelFc(
     private val buildVariant: String,
-    private val networkService: NetworkService,
-) : BaseViewModel() {
+    private val fcNetworkService: FcNetworkService,
+) : FcBaseViewModel() {
 
     val loader: MutableLiveData<Boolean> = MutableLiveData()
     val messageList: MutableLiveData<List<Message>> = MutableLiveData()
@@ -348,7 +348,7 @@ internal class ChatViewModel(
     ) {
 
         CoroutineScope(Dispatchers.IO).launch {
-            val result = networkService.sendFCM(
+            val result = fcNetworkService.sendFCM(
                 sessionToken = "key=$serverKey",
                 contentType = "application/json",
                 requestNotificaton = requestNotificaton
@@ -663,7 +663,7 @@ internal class ChatViewModel(
                     .addOnSuccessListener {
                         try {
                             when (requirement) {
-                                MessageFragment.sendMessage -> {
+                                FcMessageFragmentFc.sendMessage -> {
                                     updatedSeenDataForThisChatSendMessage
                                         .postValue(it.get(Constants.Firestore.seen) as HashMap<String, String>)
                                 }

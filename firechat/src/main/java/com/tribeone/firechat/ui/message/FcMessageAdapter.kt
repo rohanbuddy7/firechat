@@ -1,24 +1,21 @@
 package com.tribeone.firechat.ui.message
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tribeone.firechat.MyApplication
-import com.tribeone.firechat.R
 import com.tribeone.firechat.databinding.FcCardChatBinding
 import com.tribeone.firechat.model.Message
-import com.tribeone.firechat.ui.chatlist.ChatlistAdapter
 import com.tribeone.firechat.utils.ProfileUtils
 import com.tribeone.firechat.utils.TimeUtils
 
-internal class MessageAdapter(
+internal class FcMessageAdapter(
     var context: Context,
     var onClickListener: OnClickListener
-) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<FcMessageAdapter.ViewHolder>() {
 
     private var selectedId: Int? = null
     private var data: ArrayList<Message> = arrayListOf()

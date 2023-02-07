@@ -1,16 +1,14 @@
 package com.tribeone.firechat
 
 import android.app.Application
-import com.google.firebase.FirebaseApp
-import com.tribeone.firechat.di.component.ApplicationComponent
-import com.tribeone.firechat.di.component.DaggerApplicationComponent
-import com.tribeone.firechat.di.module.ApplicationModule
+import com.tribeone.firechat.di.component.FcApplicationComponent
+import com.tribeone.firechat.di.component.DaggerFcApplicationComponent
 import com.tribeone.firechat.model.Users
 import dagger.Component
 
 internal class MyApplication: Application() {
 
-    lateinit var applicationComponent: ApplicationComponent
+    lateinit var fcApplicationComponent: FcApplicationComponent
 
     var component: Component? = null
 
@@ -27,10 +25,10 @@ internal class MyApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        applicationComponent = DaggerApplicationComponent
+        fcApplicationComponent = DaggerFcApplicationComponent
             .builder()
             .build()
-        applicationComponent.inject(this)
+        fcApplicationComponent.inject(this)
 
     }
 

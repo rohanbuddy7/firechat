@@ -21,18 +21,18 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.tribeone.firechat.MyApplication
 import com.tribeone.firechat.MyApplication.Companion.messageFragmentVisible
 import com.tribeone.firechat.databinding.FcFragmentChatBinding
-import com.tribeone.firechat.di.component.FragmentComponent
+import com.tribeone.firechat.di.component.FcFragmentComponent
 import com.tribeone.firechat.model.ChatListResponse
 import com.tribeone.firechat.model.Message
 import com.tribeone.firechat.model.UpdateChatList
-import com.tribeone.firechat.ui.base.BaseFragment
-import com.tribeone.firechat.ui.chatlist.ChatlistFragment
-import com.tribeone.firechat.ui.main.FcHomeActivity
+import com.tribeone.firechat.ui.base.FcBaseFragment
+import com.tribeone.firechat.ui.chatlist.FcChatlistFragmentFc
+import com.tribeone.firechat.ui.main.FcHomeActivityFc
 import com.tribeone.firechat.utils.*
 
 @SuppressLint("LogNotTimber")
-internal class MessageFragment : BaseFragment<ChatViewModel>(),
-    MessageAdapter.OnClickListener {
+internal class FcMessageFragmentFc : FcBaseFragment<FcChatViewModelFc>(),
+    FcMessageAdapter.OnClickListener {
 
     companion object {
         val CHAT_LIST_RESPONSE = "chatListResponse"
@@ -44,7 +44,7 @@ internal class MessageFragment : BaseFragment<ChatViewModel>(),
     private lateinit var mMessageReceiver: BroadcastReceiver
     private var startedNewChat: Boolean = false
     private var lastVisible: DocumentSnapshot? = null
-    private var adapter: MessageAdapter? = null
+    private var adapterFc: FcMessageAdapter? = null
     private var binding: FcFragmentChatBinding? = null
     private var chatId: String? = null
     private var hasMore = false
@@ -79,8 +79,8 @@ internal class MessageFragment : BaseFragment<ChatViewModel>(),
         return FireChatHelper.buildVariants!!
     }
 
-    override fun injectDependencies(fragment: FragmentComponent) {
-        fragment.inject(this)
+    override fun injectDependencies(fcFragment: FcFragmentComponent) {
+        fcFragment.inject(this)
     }
 
     override fun setupView() {
@@ -125,10 +125,10 @@ internal class MessageFragment : BaseFragment<ChatViewModel>(),
         }
 
 
-        adapter = MessageAdapter(requireContext(), this)
+        adapterFc = FcMessageAdapter(requireContext(), this)
         val linear = LinearLayoutManager(requireContext(), GridLayoutManager.VERTICAL, true)
         binding?.rvChat?.layoutManager = linear
-        binding?.rvChat?.adapter = adapter
+        binding?.rvChat?.adapter = adapterFc
         binding?.rvChat?.addOnScrollListener(object : PaginationScrollListener(linear) {
             override fun loadMoreItems() {
                 if (hasMore) {
@@ -169,12 +169,12 @@ internal class MessageFragment : BaseFragment<ChatViewModel>(),
     private fun onbackPress() {
         val resultBundle = Bundle().apply {
             putString(Constants.Firestore.chatId, chatId)
-            val recentMessage = adapter?.getRecentlyAddedMessage()
+            val recentMessage = adapterFc?.getRecentlyAddedMessage()
             Logger.debug(recentMessage?.message?:"")
             putString(Constants.Firestore.lastMessageId, recentMessage?.messageId)
         }
         setFragmentResult(MESSAGE_FRAGMENT_BACK, resultBundle)
-        (requireActivity() as FcHomeActivity).onBackPressed()
+        (requireActivity() as FcHomeActivityFc).onBackPressed()
     }
 
     private fun sendMessage() {
@@ -279,7 +279,7 @@ internal class MessageFragment : BaseFragment<ChatViewModel>(),
                 for (i in it) {
                     Log.e("TAG", "setupObservers addData: ${i.message}")
                 }
-                adapter?.addData(it as ArrayList<Message>)
+                adapterFc?.addData(it as ArrayList<Message>)
             } else {
                 hasMore = false
             }
@@ -290,7 +290,7 @@ internal class MessageFragment : BaseFragment<ChatViewModel>(),
                 for (i in it) {
                     Log.e("TAG", "setupObservers addNewMessageList: ${i.message}")
                 }
-                adapter?.addNewMessageList(it as ArrayList<Message>)
+                adapterFc?.addNewMessageList(it as ArrayList<Message>)
                 binding?.rvChat?.scrollToPosition(0)
             }
         })
@@ -353,7 +353,7 @@ internal class MessageFragment : BaseFragment<ChatViewModel>(),
         chatListResponse?.seen = seen
         try {
             chatListResponse?.let {
-                (parentFragment as ChatlistFragment).adapter?.updateSingleChat(it)
+                (parentFragment as FcChatlistFragmentFc).adapterFc?.updateSingleChat(it)
             }
         } catch (e: Exception) {
             Logger.error(e.toString())

@@ -16,7 +16,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 
-internal class FirebaseMessagingService : FirebaseMessagingService() {
+internal class FcFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)

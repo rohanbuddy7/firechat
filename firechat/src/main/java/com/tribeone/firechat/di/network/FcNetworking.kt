@@ -13,7 +13,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
-internal object Networking {
+internal object FcNetworking {
 
     const val authorization = "Authorization"
     const val contentType = "Content-Type"

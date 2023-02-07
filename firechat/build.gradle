@@ -51,6 +51,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     api 'com.google.firebase:firebase-firestore-ktx:24.2.2'
+
     api 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     api 'androidx.navigation:navigation-ui-ktx:2.5.3'
 

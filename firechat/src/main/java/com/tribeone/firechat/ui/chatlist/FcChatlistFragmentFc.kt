@@ -15,13 +15,13 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.tribeone.firechat.MyApplication
 import com.tribeone.firechat.MyApplication.Companion.chatlistFragmentVisible
 import com.tribeone.firechat.databinding.FcFragmentChatlistBinding
-import com.tribeone.firechat.di.component.FragmentComponent
+import com.tribeone.firechat.di.component.FcFragmentComponent
 import com.tribeone.firechat.model.ChatListResponse
 import com.tribeone.firechat.model.UpdateChatList
-import com.tribeone.firechat.ui.base.BaseFragment
-import com.tribeone.firechat.ui.message.ChatViewModel
-import com.tribeone.firechat.ui.main.FcHomeActivity
-import com.tribeone.firechat.ui.message.MessageFragment
+import com.tribeone.firechat.ui.base.FcBaseFragment
+import com.tribeone.firechat.ui.message.FcChatViewModelFc
+import com.tribeone.firechat.ui.main.FcHomeActivityFc
+import com.tribeone.firechat.ui.message.FcMessageFragmentFc
 import com.tribeone.firechat.utils.*
 import com.tribeone.firechat.utils.Constants.FCM.FIRECHAT_MESSAGE_SEEN
 import com.tribeone.firechat.utils.Constants.FCM.FIRECHAT_NEW_MESSAGE
@@ -30,12 +30,12 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import kotlin.collections.ArrayList
 
-internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter.OnClickListener {
+internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcChatlistAdapter.OnClickListener {
 
     private var once: Boolean = true
     private var onceObserver: Boolean = true
     private var binding: FcFragmentChatlistBinding? = null
-    public var adapter: ChatlistAdapter? = null
+    public var adapterFc: FcChatlistAdapter? = null
     private var userId: String? = null
     private var chatId: String? = null
     private lateinit var mMessageReceiver: BroadcastReceiver
@@ -44,8 +44,8 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
         return R.layout.fragment_chatlist
     }*/
 
-    override fun injectDependencies(fragment: FragmentComponent) {
-        fragment.inject(this)
+    override fun injectDependencies(fcFragment: FcFragmentComponent) {
+        fcFragment.inject(this)
     }
 
     override fun setBuildVariant(): String {
@@ -91,19 +91,19 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
 
             initBroadcastAndOthers()
 
-            adapter = ChatlistAdapter(requireContext(), this)
-            binding?.rvChatlist?.adapter = adapter
+            adapterFc = FcChatlistAdapter(requireContext(), this)
+            binding?.rvChatlist?.adapter = adapterFc
 
             binding?.tvStartchat?.setOnClickListener {
-                (activity as FcHomeActivity).showChat(null)
+                (activity as FcHomeActivityFc).showChat(null)
             }
 
             binding?.ivChatListBack?.setOnClickListener {
-                (requireActivity() as FcHomeActivity).onBackPressed()
+                (requireActivity() as FcHomeActivityFc).onBackPressed()
             }
 
             binding?.pullToRefresh?.setOnRefreshListener {
-                adapter?.clearData()
+                adapterFc?.clearData()
                 apiCall()
             }
 
@@ -146,7 +146,7 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
                     val sorted = chatlistresponse.sortedByDescending { it?.lastMessageAt }
                     val new = ArrayList<ChatListResponse?>()
                     new.addAll(sorted)
-                    adapter?.addData(new)
+                    adapterFc?.addData(new)
 
                     val allParticipants = arrayListOf<String>()
                     for (i in sorted) {
@@ -161,12 +161,12 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
 
             viewModel.singleChatUpdate.observe(this, Observer {
                 Log.e("TAG", "setupObservers: redvel")
-                adapter?.updateSingleChat(it)
+                adapterFc?.updateSingleChat(it)
             })
 
             viewModel.userDetails.observe(this, Observer {
                 MyApplication.allUserDetails = it
-                adapter?.notifyDataSetChanged()
+                adapterFc?.notifyDataSetChanged()
                 notificationRedirection()
             })
 
@@ -187,9 +187,9 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
 
     private fun notificationRedirection() {
         if (chatId != null) {
-            val chatListResponse = adapter?.getData()?.find { it?.chatId == chatId }
+            val chatListResponse = adapterFc?.getData()?.find { it?.chatId == chatId }
             chatListResponse?.let {
-                (activity as FcHomeActivity).showChat(it)
+                (activity as FcHomeActivityFc).showChat(it)
                 chatId = null
             }
         }
@@ -197,12 +197,12 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
 
     private fun updateSeenDataLocally(chatId: String?, seen: HashMap<String, String>) {
         chatId?.let {
-            adapter?.updateOnlySeenValues(chatId, seen)
+            adapterFc?.updateOnlySeenValues(chatId, seen)
         }
     }
 
     override fun onClick(position: Int, chatListResponse: ChatListResponse?) {
-        (activity as FcHomeActivity).showChat(chatListResponse)
+        (activity as FcHomeActivityFc).showChat(chatListResponse)
     }
 
     private fun initBroadcastAndOthers() {
@@ -224,7 +224,7 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
                         _chatId?.let {
                             _userId?.let {
                                 val chatListResponse =
-                                    adapter?.getData()?.find { it?.chatId == _chatId }
+                                    adapterFc?.getData()?.find { it?.chatId == _chatId }
                                 chatListResponse?.seen?.set(_userId.toString(), "0")
                                 chatListResponse?.seen?.let {
                                     updateSeenDataLocally(_chatId, it)
@@ -240,8 +240,8 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
             }
         }
 
-        setFragmentResultListener(MessageFragment.MESSAGE_FRAGMENT_BACK) { reqKey, bundle ->
-            if (reqKey == MessageFragment.MESSAGE_FRAGMENT_BACK) {
+        setFragmentResultListener(FcMessageFragmentFc.MESSAGE_FRAGMENT_BACK) { reqKey, bundle ->
+            if (reqKey == FcMessageFragmentFc.MESSAGE_FRAGMENT_BACK) {
                 val chatId = bundle.getString(Constants.Firestore.chatId)
                 val lastMessageId = bundle.getString(Constants.Firestore.lastMessageId)
                 markMessageAsRead(chatId)
@@ -257,15 +257,15 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
 
     private fun markMessageAsRead(chatId: String?) {
         MyApplication.userId?.let {
-            val chatListResponse = adapter?.getData()?.find { it?.chatId == chatId }
+            val chatListResponse = adapterFc?.getData()?.find { it?.chatId == chatId }
             if (chatListResponse?.seen?.get(MyApplication.userId!!) != "0") {
                 chatListResponse?.seen?.set(MyApplication.userId!!, "0")
                 chatListResponse?.let {
-                    adapter?.updateSingleChat(it)
+                    adapterFc?.updateSingleChat(it)
                 }
                 //viewModel.updateSeenValues(chatId, chatListResponse?.seen)
             } else {
-                adapter?.notifyDataSetChanged()
+                adapterFc?.notifyDataSetChanged()
             }
         }
     }
@@ -273,7 +273,7 @@ internal class ChatlistFragment : BaseFragment<ChatViewModel>(), ChatlistAdapter
     @Subscribe
     fun update(updateChatList: UpdateChatList) {
         updateChatList.chatListResponse?.let {
-            adapter?.updateSingleChat(it)
+            adapterFc?.updateSingleChat(it)
         }
     }
 

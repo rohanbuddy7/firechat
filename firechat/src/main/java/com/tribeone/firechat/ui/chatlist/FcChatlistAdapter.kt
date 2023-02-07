@@ -1,7 +1,6 @@
 package com.tribeone.firechat.ui.chatlist
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,10 @@ import com.tribeone.firechat.utils.Constants
 import com.tribeone.firechat.utils.ProfileUtils
 import com.tribeone.firechat.utils.TimeUtils
 
-internal class ChatlistAdapter(
+internal class FcChatlistAdapter(
     var context: Context,
     var onClickListener: OnClickListener
-) : RecyclerView.Adapter<ChatlistAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<FcChatlistAdapter.ViewHolder>() {
 
     private var selectedId: Int? = null
     private var data: ArrayList<ChatListResponse?> = arrayListOf()
