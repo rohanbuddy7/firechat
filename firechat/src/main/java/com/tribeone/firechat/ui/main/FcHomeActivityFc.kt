@@ -10,14 +10,14 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
-import com.tribeone.firechat.MyApplication
+import com.tribeone.firechat.FcMyApplication
 import com.tribeone.firechat.R
 import com.tribeone.firechat.model.ChatListResponse
 import com.tribeone.firechat.model.Users
 import com.tribeone.firechat.ui.base.FcBaseActivity
 import com.tribeone.firechat.ui.message.FcMessageFragmentFc.Companion.CHAT_LIST_RESPONSE
-import com.tribeone.firechat.utils.Constants
-import com.tribeone.firechat.utils.Constants.Firestore.userid
+import com.tribeone.firechat.utils.FcConstants
+import com.tribeone.firechat.utils.FcConstants.Firestore.userid
 import com.tribeone.firechat.utils.FireChatErrors
 import com.tribeone.firechat.utils.FireChatErrors.BUILD_VARIANT_NULL
 import com.tribeone.firechat.utils.FireChatHelper
@@ -30,9 +30,9 @@ internal class FcHomeActivityFc : FcBaseActivity() {
         fun openChat(user: Users, activity: Activity, chatId: String? = null) {
             val intent = Intent(activity, FcHomeActivityFc::class.java)
             val bundle = Bundle()
-            bundle.putParcelable(Constants.Firestore.user, user)
-            bundle.putString(Constants.Firestore.chatId, chatId)
-            bundle.putString(Constants.Firestore.type, Constants.Firestore.typeOpenChat)
+            bundle.putParcelable(FcConstants.Firestore.user, user)
+            bundle.putString(FcConstants.Firestore.chatId, chatId)
+            bundle.putString(FcConstants.Firestore.type, FcConstants.Firestore.typeOpenChat)
             intent.putExtras(bundle)
             activity.startActivity(intent)
         }
@@ -40,9 +40,9 @@ internal class FcHomeActivityFc : FcBaseActivity() {
         fun startDistinctConversation(user: Users, otherUserId: String, activity: Activity) {
             val intent = Intent(activity, FcHomeActivityFc::class.java)
             val bundle = Bundle()
-            bundle.putParcelable(Constants.Firestore.user, user)
-            bundle.putString(Constants.Firestore.otherUserId, otherUserId)
-            bundle.putString(Constants.Firestore.type, Constants.Firestore.typeStartNewConversation)
+            bundle.putParcelable(FcConstants.Firestore.user, user)
+            bundle.putString(FcConstants.Firestore.otherUserId, otherUserId)
+            bundle.putString(FcConstants.Firestore.type, FcConstants.Firestore.typeStartNewConversation)
             intent.putExtras(bundle)
             activity.startActivity(intent, bundle)
         }
@@ -63,11 +63,11 @@ internal class FcHomeActivityFc : FcBaseActivity() {
     }
 
     override fun setupView() {
-        user = intent.getParcelableExtra(Constants.Firestore.user)
-        chatId = intent.getStringExtra(Constants.Firestore.chatId)
+        user = intent.getParcelableExtra(FcConstants.Firestore.user)
+        chatId = intent.getStringExtra(FcConstants.Firestore.chatId)
         userId = user?.id
-        otherUserId = intent.getStringExtra(Constants.Firestore.otherUserId)
-        type = intent.getStringExtra(Constants.Firestore.type)
+        otherUserId = intent.getStringExtra(FcConstants.Firestore.otherUserId)
+        type = intent.getStringExtra(FcConstants.Firestore.type)
 
         FirebaseApp.initializeApp(this)
 
@@ -90,8 +90,8 @@ internal class FcHomeActivityFc : FcBaseActivity() {
         navHostFragment = supportFragmentManager.findFragmentById(R.id.fl_root_container) as NavHostFragment
         navController = navHostFragment?.navController
 
-        MyApplication.userId = userId
-        MyApplication.user = user
+        FcMyApplication.userId = userId
+        FcMyApplication.user = user
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -102,29 +102,29 @@ internal class FcHomeActivityFc : FcBaseActivity() {
             // Get FCM registration token
             val token = task.result
             if (token != null) {
-                MyApplication.userId?.let {
-                    MyApplication.userFCM = token
+                FcMyApplication.userId?.let {
+                    FcMyApplication.userFCM = token
                     if (FireChatHelper.buildVariants == null) {
                         FireChatErrors.crashIt(BUILD_VARIANT_NULL)
                     }
                     FireChatHelper.getInstance(FireChatHelper.buildVariants!!)
-                        .setMyDataAndFCM(MyApplication.userId!!, token, user)
+                        .setMyDataAndFCM(FcMyApplication.userId!!, token, user)
                 }
             }
         })
 
         //showChat(null)
         val args = Bundle()
-        args.putString(Constants.Firestore.userId, userid)
+        args.putString(FcConstants.Firestore.userId, userid)
         navController?.setGraph(R.navigation.fc_navigation, args)
 
 
         when (type) {
-            Constants.Firestore.typeOpenChat -> {
+            FcConstants.Firestore.typeOpenChat -> {
                 showChatList()
             }
-            Constants.Firestore.typeStartNewConversation -> {
-                MyApplication.otherUserId = otherUserId
+            FcConstants.Firestore.typeStartNewConversation -> {
+                FcMyApplication.otherUserId = otherUserId
                 showChat(null)
             }
         }
@@ -133,8 +133,8 @@ internal class FcHomeActivityFc : FcBaseActivity() {
 
     private fun showChatList() {
         val args = Bundle()
-        args.putString(Constants.Firestore.userId, userid)
-        args.putString(Constants.Firestore.chatId, chatId)
+        args.putString(FcConstants.Firestore.userId, userid)
+        args.putString(FcConstants.Firestore.chatId, chatId)
         navController?.navigate(R.id.chatlistFragment, args)
     }
 
@@ -147,7 +147,7 @@ internal class FcHomeActivityFc : FcBaseActivity() {
 
     private fun startNewChatOrOpenChat(c: ChatListResponse?): ChatListResponse {
         return if (c == null) {
-            val otherUserId = MyApplication.otherUserId ?: ""
+            val otherUserId = FcMyApplication.otherUserId ?: ""
             ChatListResponse(
                 chatId = null,
                 lastMessageAt = System.currentTimeMillis(),
@@ -155,10 +155,10 @@ internal class FcHomeActivityFc : FcBaseActivity() {
                 lastMessageBy = null,
                 messageId = null,
                 messageType = null,
-                participants = arrayListOf(MyApplication.userId ?: "", otherUserId),
-                startedBy = MyApplication.userId,
+                participants = arrayListOf(FcMyApplication.userId ?: "", otherUserId),
+                startedBy = FcMyApplication.userId,
                 seen = hashMapOf(
-                    (MyApplication.userId ?: "") to "0",
+                    (FcMyApplication.userId ?: "") to "0",
                     otherUserId to "0"
                 ),
             )

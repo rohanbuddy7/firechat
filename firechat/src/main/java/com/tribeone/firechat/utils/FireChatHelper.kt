@@ -65,19 +65,19 @@ class FireChatHelper private constructor() {
         user?.let {
             user.id?.apply {
                 val data = hashMapOf<String, String>(
-                    Constants.Firestore.id to user.id,
-                    Constants.Firestore.name to (user.name ?: ""),
-                    Constants.Firestore.profilePicture to (user.profilePicture ?: ""),
-                    Constants.Firestore.fcm to fcmToken
+                    FcConstants.Firestore.id to user.id,
+                    FcConstants.Firestore.name to (user.name ?: ""),
+                    FcConstants.Firestore.profilePicture to (user.profilePicture ?: ""),
+                    FcConstants.Firestore.fcm to fcmToken
                 )
                 FirebaseFirestore.getInstance()
-                    .collection(ModUtils.getBuildVariantUsers(buildVariants))
+                    .collection(FcModUtils.getBuildVariantUsers(buildVariants))
                     .document(userid)
                     .set(data)
                     .addOnSuccessListener(OnSuccessListener<Void?> {
-                        Logger.debug("onSuccess: data addition success ")
+                        FcLogger.debug("onSuccess: data addition success ")
                     }).addOnFailureListener(OnFailureListener {
-                        Logger.debug("onFailure: data add failed ")
+                        FcLogger.debug("onFailure: data add failed ")
                     })
             }
         }

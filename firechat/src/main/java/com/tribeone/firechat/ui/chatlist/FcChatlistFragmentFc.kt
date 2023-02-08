@@ -12,8 +12,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.tribeone.firechat.MyApplication
-import com.tribeone.firechat.MyApplication.Companion.chatlistFragmentVisible
+import com.tribeone.firechat.FcMyApplication
+import com.tribeone.firechat.FcMyApplication.Companion.chatlistFragmentVisible
 import com.tribeone.firechat.databinding.FcFragmentChatlistBinding
 import com.tribeone.firechat.di.component.FcFragmentComponent
 import com.tribeone.firechat.model.ChatListResponse
@@ -23,8 +23,8 @@ import com.tribeone.firechat.ui.message.FcChatViewModelFc
 import com.tribeone.firechat.ui.main.FcHomeActivityFc
 import com.tribeone.firechat.ui.message.FcMessageFragmentFc
 import com.tribeone.firechat.utils.*
-import com.tribeone.firechat.utils.Constants.FCM.FIRECHAT_MESSAGE_SEEN
-import com.tribeone.firechat.utils.Constants.FCM.FIRECHAT_NEW_MESSAGE
+import com.tribeone.firechat.utils.FcConstants.FCM.FIRECHAT_MESSAGE_SEEN
+import com.tribeone.firechat.utils.FcConstants.FCM.FIRECHAT_NEW_MESSAGE
 import com.tribeone.firechat.utils.FireChatErrors.BUILD_VARIANT_NULL
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -85,9 +85,9 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
         if (once) {
             EventBus.getDefault().register(this)
             once = false
-            chatId = arguments?.getString(Constants.Firestore.chatId)
+            chatId = arguments?.getString(FcConstants.Firestore.chatId)
             //userId = "7EWcbEpojdaY5A5ccWGR"//MyApplication.userId
-            userId = MyApplication.userId
+            userId = FcMyApplication.userId
 
             initBroadcastAndOthers()
 
@@ -109,14 +109,14 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
 
             LocalBroadcastManager
                 .getInstance(requireContext())
-                .registerReceiver(mMessageReceiver, IntentFilter(Constants.FCM.FIRECHAT_BROADCAST));
+                .registerReceiver(mMessageReceiver, IntentFilter(FcConstants.FCM.FIRECHAT_BROADCAST));
 
             apiCall()
 
             if (FireChatHelper.buildVariants == FireChatHelper.staging) {
                 binding?.tvStagingInfo?.visibility = View.VISIBLE
                 binding?.tvStagingInfo?.text =
-                    "userId = ${MyApplication.userId} -- ${MyApplication.user?.name}"
+                    "userId = ${FcMyApplication.userId} -- ${FcMyApplication.user?.name}"
             } else {
                 binding?.tvStagingInfo?.visibility = View.GONE
             }
@@ -129,7 +129,7 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
             binding?.progressCircular?.visibility = View.VISIBLE
             viewModel.getChatList(userId, null)
         } ?: kotlin.run {
-            Toaster.show(requireContext(), "Userid not found")
+            FcToaster.show(requireContext(), "Userid not found")
         }
     }
 
@@ -150,7 +150,7 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
 
                     val allParticipants = arrayListOf<String>()
                     for (i in sorted) {
-                        i?.participants?.find { it != MyApplication.userId }?.let { user ->
+                        i?.participants?.find { it != FcMyApplication.userId }?.let { user ->
                             allParticipants.add(user)
                         }
                     }
@@ -165,7 +165,7 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
             })
 
             viewModel.userDetails.observe(this, Observer {
-                MyApplication.allUserDetails = it
+                FcMyApplication.allUserDetails = it
                 adapterFc?.notifyDataSetChanged()
                 notificationRedirection()
             })
@@ -209,18 +209,18 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
         mMessageReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
                 // Get extra data included in the Intent
-                when (intent.getStringExtra(Constants.FCMParams.action)) {
+                when (intent.getStringExtra(FcConstants.FCMParams.action)) {
                     FIRECHAT_NEW_MESSAGE -> {
-                        val chatId = intent.getStringExtra(Constants.FCMParams.chatId)
+                        val chatId = intent.getStringExtra(FcConstants.FCMParams.chatId)
                         chatId?.let {
                             viewModel.getSingleChatData(chatId)
                         } ?: kotlin.run {
-                            Toaster.show(requireContext(), "chatId is null")
+                            FcToaster.show(requireContext(), "chatId is null")
                         }
                     }
                     FIRECHAT_MESSAGE_SEEN -> {
-                        val _chatId = intent.getStringExtra(Constants.FCMParams.chatId)
-                        val _userId = intent.getStringExtra(Constants.FCMParams.userId)
+                        val _chatId = intent.getStringExtra(FcConstants.FCMParams.chatId)
+                        val _userId = intent.getStringExtra(FcConstants.FCMParams.userId)
                         _chatId?.let {
                             _userId?.let {
                                 val chatListResponse =
@@ -230,10 +230,10 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
                                     updateSeenDataLocally(_chatId, it)
                                 }
                             } ?: kotlin.run {
-                                Logger.debug("userId is null")
+                                FcLogger.debug("userId is null")
                             }
                         } ?: kotlin.run {
-                            Logger.debug("chatId is null")
+                            FcLogger.debug("chatId is null")
                         }
                     }
                 }
@@ -242,8 +242,8 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
 
         setFragmentResultListener(FcMessageFragmentFc.MESSAGE_FRAGMENT_BACK) { reqKey, bundle ->
             if (reqKey == FcMessageFragmentFc.MESSAGE_FRAGMENT_BACK) {
-                val chatId = bundle.getString(Constants.Firestore.chatId)
-                val lastMessageId = bundle.getString(Constants.Firestore.lastMessageId)
+                val chatId = bundle.getString(FcConstants.Firestore.chatId)
+                val lastMessageId = bundle.getString(FcConstants.Firestore.lastMessageId)
                 markMessageAsRead(chatId)
                 decideAndMarkLastMessageAsRead(chatId, lastMessageId)
                 //viewModel.getUpdatedSeenData(chatId, MessageFragment.backPressed)
@@ -256,10 +256,10 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
     }
 
     private fun markMessageAsRead(chatId: String?) {
-        MyApplication.userId?.let {
+        FcMyApplication.userId?.let {
             val chatListResponse = adapterFc?.getData()?.find { it?.chatId == chatId }
-            if (chatListResponse?.seen?.get(MyApplication.userId!!) != "0") {
-                chatListResponse?.seen?.set(MyApplication.userId!!, "0")
+            if (chatListResponse?.seen?.get(FcMyApplication.userId!!) != "0") {
+                chatListResponse?.seen?.set(FcMyApplication.userId!!, "0")
                 chatListResponse?.let {
                     adapterFc?.updateSingleChat(it)
                 }

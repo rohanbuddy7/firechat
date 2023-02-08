@@ -2,7 +2,7 @@ package com.tribeone.firechat.utils
 
 import timber.log.Timber
 
-internal object Logger {
+internal object FcLogger {
 
     fun debug(text: String){
         Timber.d(text)

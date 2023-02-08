@@ -6,9 +6,9 @@ import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.tribeone.firechat.MyApplication
-import com.tribeone.firechat.MyApplication.Companion.userFCM
-import com.tribeone.firechat.utils.Constants
+import com.tribeone.firechat.FcMyApplication
+import com.tribeone.firechat.FcMyApplication.Companion.userFCM
+import com.tribeone.firechat.utils.FcConstants
 import com.tribeone.firechat.utils.FireChatErrors
 import com.tribeone.firechat.utils.FireChatErrors.BUILD_VARIANT_NULL
 import com.tribeone.firechat.utils.FireChatHelper
@@ -34,10 +34,10 @@ internal class FcFirebaseMessagingService : FirebaseMessagingService() {
 
         if (data.isNotEmpty()) {
 
-            if (data.containsKey(Constants.FCMParams.type)) {
-                val requestUuid = data[Constants.FCMParams.request_uuid]
-                val type = data[Constants.FCMParams.type]
-                val dataContent = data[Constants.FCMParams.data]
+            if (data.containsKey(FcConstants.FCMParams.type)) {
+                val requestUuid = data[FcConstants.FCMParams.request_uuid]
+                val type = data[FcConstants.FCMParams.type]
+                val dataContent = data[FcConstants.FCMParams.data]
                 handleOnMessage(applicationContext, requestUuid, type, dataContent, false)
             }
         }
@@ -51,16 +51,16 @@ internal class FcFirebaseMessagingService : FirebaseMessagingService() {
         isPolled: Boolean
     ) {
         when (type) {
-            Constants.FCM.FIRECHAT_NEW_MESSAGE -> {
+            FcConstants.FCM.FIRECHAT_NEW_MESSAGE -> {
                 val jsonObject = JSONObject(internalData)
-                if (MyApplication.chatlistFragmentVisible == true || MyApplication.messageFragmentVisible == true) {
-                    val intent = Intent(Constants.FCM.FIRECHAT_BROADCAST)
+                if (FcMyApplication.chatlistFragmentVisible == true || FcMyApplication.messageFragmentVisible == true) {
+                    val intent = Intent(FcConstants.FCM.FIRECHAT_BROADCAST)
                     //intent.action = Constants.FCM.FIRECHAT_NEW_MESSAGE
-                    intent.putExtra(Constants.FCMParams.title, jsonObject.getString(Constants.FCMParams.title))
-                    intent.putExtra(Constants.FCMParams.message, jsonObject.getString(Constants.FCMParams.message))
-                    intent.putExtra(Constants.FCMParams.action, jsonObject.getString(Constants.FCMParams.action))
-                    intent.putExtra(Constants.FCMParams.chatId, jsonObject.getString(Constants.FCMParams.chatId))
-                    intent.putExtra(Constants.FCMParams.seen, jsonObject.getString(Constants.FCMParams.seen))
+                    intent.putExtra(FcConstants.FCMParams.title, jsonObject.getString(FcConstants.FCMParams.title))
+                    intent.putExtra(FcConstants.FCMParams.message, jsonObject.getString(FcConstants.FCMParams.message))
+                    intent.putExtra(FcConstants.FCMParams.action, jsonObject.getString(FcConstants.FCMParams.action))
+                    intent.putExtra(FcConstants.FCMParams.chatId, jsonObject.getString(FcConstants.FCMParams.chatId))
+                    intent.putExtra(FcConstants.FCMParams.seen, jsonObject.getString(FcConstants.FCMParams.seen))
                     LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
                 } else {
                     try {
@@ -74,11 +74,11 @@ internal class FcFirebaseMessagingService : FirebaseMessagingService() {
                             FireChatErrors.crashIt(BUILD_VARIANT_NULL)
                         }
                         FireChatHelper.getInstance(FireChatHelper.buildVariants!!).onMessageReceivedListener?.onMessageReceived(
-                            jsonObject.getString(Constants.FCMParams.title),
-                            jsonObject.getString(Constants.FCMParams.message),
-                            jsonObject.getString(Constants.FCMParams.seen),
-                            jsonObject.getString(Constants.FCMParams.chatId),
-                            jsonObject.getString(Constants.FCMParams.action)
+                            jsonObject.getString(FcConstants.FCMParams.title),
+                            jsonObject.getString(FcConstants.FCMParams.message),
+                            jsonObject.getString(FcConstants.FCMParams.seen),
+                            jsonObject.getString(FcConstants.FCMParams.chatId),
+                            jsonObject.getString(FcConstants.FCMParams.action)
                         )
 
                     } catch (e: JSONException) {
@@ -86,15 +86,15 @@ internal class FcFirebaseMessagingService : FirebaseMessagingService() {
                     }
                 }
             }
-            Constants.FCM.FIRECHAT_MESSAGE_SEEN -> {
+            FcConstants.FCM.FIRECHAT_MESSAGE_SEEN -> {
                 val jsonObject = JSONObject(internalData)
-                if (MyApplication.chatlistFragmentVisible == true || MyApplication.messageFragmentVisible == true) {
-                    val intent = Intent(Constants.FCM.FIRECHAT_BROADCAST)
+                if (FcMyApplication.chatlistFragmentVisible == true || FcMyApplication.messageFragmentVisible == true) {
+                    val intent = Intent(FcConstants.FCM.FIRECHAT_BROADCAST)
                     //intent.action = Constants.FCM.FIRECHAT_MESSAGE_SEEN
-                    intent.putExtra(Constants.FCMParams.action, jsonObject.getString(Constants.FCMParams.action))
-                    intent.putExtra(Constants.FCMParams.chatId, jsonObject.getString(Constants.FCMParams.chatId))
-                    intent.putExtra(Constants.FCMParams.userId, jsonObject.getString(Constants.FCMParams.userId))
-                    intent.putExtra(Constants.FCMParams.seen, jsonObject.getString(Constants.FCMParams.seen))
+                    intent.putExtra(FcConstants.FCMParams.action, jsonObject.getString(FcConstants.FCMParams.action))
+                    intent.putExtra(FcConstants.FCMParams.chatId, jsonObject.getString(FcConstants.FCMParams.chatId))
+                    intent.putExtra(FcConstants.FCMParams.userId, jsonObject.getString(FcConstants.FCMParams.userId))
+                    intent.putExtra(FcConstants.FCMParams.seen, jsonObject.getString(FcConstants.FCMParams.seen))
                     LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
                 }
             }

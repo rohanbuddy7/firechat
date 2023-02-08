@@ -1,21 +1,21 @@
 package com.tribeone.firechat.utils
 
-import com.tribeone.firechat.MyApplication
+import com.tribeone.firechat.FcMyApplication
 
-internal class ProfileUtils {
+internal class FcProfileUtils {
 
     companion object {
-        var profileUtils: ProfileUtils? = null
-        fun getInstance(): ProfileUtils {
-            if (profileUtils == null) {
-                profileUtils = ProfileUtils()
+        var fcProfileUtils: FcProfileUtils? = null
+        fun getInstance(): FcProfileUtils {
+            if (fcProfileUtils == null) {
+                fcProfileUtils = FcProfileUtils()
             }
-            return profileUtils!!
+            return fcProfileUtils!!
         }
     }
 
     fun getName(userId: String): String{
-        val user = MyApplication.allUserDetails[userId]
+        val user = FcMyApplication.allUserDetails[userId]
         return if(user?.name!=null){
             user.name
         } else {
@@ -24,7 +24,7 @@ internal class ProfileUtils {
     }
 
     fun getProfilePicture(userId: String): String?{
-        val user = MyApplication.allUserDetails[userId]
+        val user = FcMyApplication.allUserDetails[userId]
         return if(user?.profilePicture!=null){
             user.profilePicture
         } else {

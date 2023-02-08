@@ -6,7 +6,7 @@ import com.tribeone.firechat.di.component.DaggerFcApplicationComponent
 import com.tribeone.firechat.model.Users
 import dagger.Component
 
-internal class MyApplication: Application() {
+internal class FcMyApplication: Application() {
 
     lateinit var fcApplicationComponent: FcApplicationComponent
 

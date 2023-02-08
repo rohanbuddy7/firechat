@@ -3,7 +3,7 @@ package com.tribeone.firechat.ui.base
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.tribeone.firechat.MyApplication
+import com.tribeone.firechat.FcMyApplication
 import com.tribeone.firechat.di.component.DaggerFcFragmentComponent
 import com.tribeone.firechat.di.component.FcFragmentComponent
 import com.tribeone.firechat.di.module.FcFragmentModule
@@ -32,7 +32,7 @@ internal abstract class FcBaseFragment<VM: FcBaseViewModel>: Fragment() {
     private fun buildFragmentComponent() =
         DaggerFcFragmentComponent
             .builder()
-            .fcApplicationComponent((requireContext().applicationContext as MyApplication).fcApplicationComponent)
+            .fcApplicationComponent((requireContext().applicationContext as FcMyApplication).fcApplicationComponent)
             .fcFragmentModule(FcFragmentModule(this, setBuildVariant()))
             .build()
 

@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.tribeone.firechat.MyApplication
+import com.tribeone.firechat.FcMyApplication
 import com.tribeone.firechat.databinding.FcCardChatListBinding
 import com.tribeone.firechat.model.ChatListResponse
-import com.tribeone.firechat.utils.Constants
-import com.tribeone.firechat.utils.ProfileUtils
-import com.tribeone.firechat.utils.TimeUtils
+import com.tribeone.firechat.utils.FcConstants
+import com.tribeone.firechat.utils.FcProfileUtils
+import com.tribeone.firechat.utils.FcTimeUtils
 
 internal class FcChatlistAdapter(
     var context: Context,
@@ -51,12 +51,12 @@ internal class FcChatlistAdapter(
             c: ChatListResponse?,
             onClickListener: OnClickListener
         ) {
-            if (c?.messageType == Constants.Firestore.distinctType) {
+            if (c?.messageType == FcConstants.Firestore.distinctType) {
                 c.participants?.let {
                     for (i in it.indices) {
-                        if (MyApplication.userId != c.participants[i]) {
-                            val name: String = ProfileUtils.getInstance().getName(c.participants[i])
-                            val profilePic: String? = ProfileUtils.getInstance().getProfilePicture(c.participants[i])
+                        if (FcMyApplication.userId != c.participants[i]) {
+                            val name: String = FcProfileUtils.getInstance().getName(c.participants[i])
+                            val profilePic: String? = FcProfileUtils.getInstance().getProfilePicture(c.participants[i])
 
                             tvNameChatList.text = name
                             Glide.with(context).load(profilePic).into(ivDpChatList)
@@ -66,7 +66,7 @@ internal class FcChatlistAdapter(
                 }
             }
             tvMessageChatList.text = c?.lastMessage
-            when (val count = c?.seen?.get(MyApplication.userId)) {
+            when (val count = c?.seen?.get(FcMyApplication.userId)) {
                 "0" -> {
                     tvUnreadMsgsCountChatList.visibility = View.GONE
                 }
@@ -76,9 +76,9 @@ internal class FcChatlistAdapter(
                 }
             }
             c?.lastMessageAt?.let {
-                val date = TimeUtils.getDatex(c.lastMessageAt.toLong(), "yyyy-MM-dd'T'HH:mm:ss")
+                val date = FcTimeUtils.getDatex(c.lastMessageAt.toLong(), "yyyy-MM-dd'T'HH:mm:ss")
                 date?.let { datex ->
-                    tvTimeChatList.text = TimeUtils.getTimeAgo(datex)
+                    tvTimeChatList.text = FcTimeUtils.getTimeAgo(datex)
                 }
             }
 

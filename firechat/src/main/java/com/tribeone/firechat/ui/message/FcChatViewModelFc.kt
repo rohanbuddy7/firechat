@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.*
-import com.tribeone.firechat.MyApplication
+import com.tribeone.firechat.FcMyApplication
 import com.tribeone.firechat.di.Request.*
 import com.tribeone.firechat.di.network.FcNetworkService
 import com.tribeone.firechat.model.ChatListResponse
@@ -15,14 +15,14 @@ import com.tribeone.firechat.model.Message
 import com.tribeone.firechat.model.SeenAndDecision
 import com.tribeone.firechat.model.Users
 import com.tribeone.firechat.ui.base.FcBaseViewModel
-import com.tribeone.firechat.utils.Constants
-import com.tribeone.firechat.utils.Constants.FCM.FIRECHAT_MESSAGE_SEEN
-import com.tribeone.firechat.utils.Constants.FCM.FIRECHAT_NEW_MESSAGE
+import com.tribeone.firechat.utils.FcConstants
+import com.tribeone.firechat.utils.FcConstants.FCM.FIRECHAT_MESSAGE_SEEN
+import com.tribeone.firechat.utils.FcConstants.FCM.FIRECHAT_NEW_MESSAGE
 import com.tribeone.firechat.utils.FireChatErrors
 import com.tribeone.firechat.utils.FireChatErrors.NO_SERVER_KEY_FOUND
 import com.tribeone.firechat.utils.FireChatErrors.OTHER_USERS_FCM_KEY_FOUND
-import com.tribeone.firechat.utils.Logger
-import com.tribeone.firechat.utils.ModUtils
+import com.tribeone.firechat.utils.FcLogger
+import com.tribeone.firechat.utils.FcModUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,15 +53,15 @@ internal class FcChatViewModelFc(
     fun setNewMessagesListener(chatid: String) {
         var firsttime = false
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-        db.collection(ModUtils.getBuildVariantMessage(buildVariant))
+        db.collection(FcModUtils.getBuildVariantMessage(buildVariant))
             .document(chatid)
-            .collection(Constants.Firestore.message)
-            .orderBy(Constants.Firestore.timestamp, Query.Direction.DESCENDING)
+            .collection(FcConstants.Firestore.message)
+            .orderBy(FcConstants.Firestore.timestamp, Query.Direction.DESCENDING)
             .limit(1)
             .addSnapshotListener(object : EventListener<QuerySnapshot?> {
                 override fun onEvent(snapshots: QuerySnapshot?, e: FirebaseFirestoreException?) {
                     if (e != null) {
-                        Logger.debug("error: $e")
+                        FcLogger.debug("error: $e")
                         return
                     }
 
@@ -81,10 +81,10 @@ internal class FcChatViewModelFc(
                                     }
                                 }
                                 DocumentChange.Type.MODIFIED -> {
-                                    Logger.debug("modified ${dc.document}")
+                                    FcLogger.debug("modified ${dc.document}")
                                 }
                                 DocumentChange.Type.REMOVED -> {
-                                    Logger.debug("removed ${dc.document}")
+                                    FcLogger.debug("removed ${dc.document}")
                                 }
                             }
                         }
@@ -102,15 +102,15 @@ internal class FcChatViewModelFc(
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
         var query: Query? = null
         if (lastVisibleDocument == null) {
-            query = db.collection(ModUtils.getBuildVariantMessage(buildVariant))
+            query = db.collection(FcModUtils.getBuildVariantMessage(buildVariant))
                 .document(chatId)
-                .collection(Constants.Firestore.message)
-                .orderBy(Constants.Firestore.timestamp, Query.Direction.DESCENDING)
+                .collection(FcConstants.Firestore.message)
+                .orderBy(FcConstants.Firestore.timestamp, Query.Direction.DESCENDING)
         } else {
-            query = db.collection(ModUtils.getBuildVariantMessage(buildVariant))
+            query = db.collection(FcModUtils.getBuildVariantMessage(buildVariant))
                 .document(chatId)
-                .collection(Constants.Firestore.message)
-                .orderBy(Constants.Firestore.timestamp, Query.Direction.DESCENDING)
+                .collection(FcConstants.Firestore.message)
+                .orderBy(FcConstants.Firestore.timestamp, Query.Direction.DESCENDING)
                 .startAfter(lastVisibleDocument)
         }
 
@@ -141,15 +141,15 @@ internal class FcChatViewModelFc(
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
         var query: Query? = null
         query = if (lastVisible == null) {
-            db.collection(ModUtils.getBuildVariantUsers(buildVariant))
+            db.collection(FcModUtils.getBuildVariantUsers(buildVariant))
                 .document(userid)
-                .collection(Constants.Firestore.chatlist)
-                .orderBy(Constants.Firestore.lastMessageAt, Query.Direction.DESCENDING)
+                .collection(FcConstants.Firestore.chatlist)
+                .orderBy(FcConstants.Firestore.lastMessageAt, Query.Direction.DESCENDING)
         } else {
-            db.collection(ModUtils.getBuildVariantUsers(buildVariant))
+            db.collection(FcModUtils.getBuildVariantUsers(buildVariant))
                 .document(userid)
-                .collection(Constants.Firestore.chatlist)
-                .orderBy(Constants.Firestore.lastMessageAt, Query.Direction.DESCENDING)
+                .collection(FcConstants.Firestore.chatlist)
+                .orderBy(FcConstants.Firestore.lastMessageAt, Query.Direction.DESCENDING)
                 .startAfter(lastVisible)
         }
         query
@@ -168,33 +168,33 @@ internal class FcChatViewModelFc(
                     val dc = chatsQuerySnapshot.documents[i]
                     val id = dc.id
                     Log.e("TAG", "getChatList 1: $id")
-                    val lastMessageAt = dc.get(Constants.Firestore.lastMessageAt)
+                    val lastMessageAt = dc.get(FcConstants.Firestore.lastMessageAt)
 
                     lastMessageAt?.let {
 
                         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-                        db.collection(ModUtils.getBuildVariantMessage(buildVariant))
+                        db.collection(FcModUtils.getBuildVariantMessage(buildVariant))
                             .document(id)
                             .get()
                             .addOnSuccessListener { chatDetailsDocSnapshot ->
 
                                 try {
                                     val lastMessage =
-                                        chatDetailsDocSnapshot.get(Constants.Firestore.lastMessage)
+                                        chatDetailsDocSnapshot.get(FcConstants.Firestore.lastMessage)
                                     val lastMessageAt =
-                                        chatDetailsDocSnapshot.get(Constants.Firestore.lastMessageAt)
+                                        chatDetailsDocSnapshot.get(FcConstants.Firestore.lastMessageAt)
                                     val lastMessageBy =
-                                        chatDetailsDocSnapshot.get(Constants.Firestore.lastMessageBy)
+                                        chatDetailsDocSnapshot.get(FcConstants.Firestore.lastMessageBy)
                                     val messageId =
-                                        chatDetailsDocSnapshot.get(Constants.Firestore.messageId)
+                                        chatDetailsDocSnapshot.get(FcConstants.Firestore.messageId)
                                     val messageType =
-                                        chatDetailsDocSnapshot.get(Constants.Firestore.messageType)
+                                        chatDetailsDocSnapshot.get(FcConstants.Firestore.messageType)
                                     val participants =
-                                        chatDetailsDocSnapshot.get(Constants.Firestore.participants) as ArrayList<String>?
+                                        chatDetailsDocSnapshot.get(FcConstants.Firestore.participants) as ArrayList<String>?
                                     val startedBy =
-                                        chatDetailsDocSnapshot.get(Constants.Firestore.startedBy)
+                                        chatDetailsDocSnapshot.get(FcConstants.Firestore.startedBy)
                                     val seen =
-                                        chatDetailsDocSnapshot.get(Constants.Firestore.seen) as HashMap<String, String>?
+                                        chatDetailsDocSnapshot.get(FcConstants.Firestore.seen) as HashMap<String, String>?
                                     if (messageId != null) {
                                         val chatList = ChatListResponse(
                                             chatId = id,
@@ -249,14 +249,14 @@ internal class FcChatViewModelFc(
         loader.postValue(true)
 
         FirebaseFirestore.getInstance()
-            .collection(ModUtils.getBuildVariantMessage(buildVariant))
+            .collection(FcModUtils.getBuildVariantMessage(buildVariant))
             .document(chatId)
-            .collection(Constants.Firestore.message)
+            .collection(FcConstants.Firestore.message)
             .document(messageId)
             .set(message)
             .addOnSuccessListener(OnSuccessListener<Void?> {
                 FirebaseFirestore.getInstance()
-                    .collection(ModUtils.getBuildVariantMessage(buildVariant))
+                    .collection(FcModUtils.getBuildVariantMessage(buildVariant))
                     .document(chatId)
                     .set(chatListResponse)
                     .addOnSuccessListener(OnSuccessListener<Void?> {
@@ -264,7 +264,7 @@ internal class FcChatViewModelFc(
                             participants = chatListResponse.participants ?: arrayListOf(),
                             chatId = chatId,
                             lastMessageAt = hashMapOf(
-                                Constants.Firestore.lastMessageAt to (chatListResponse.lastMessageAt
+                                FcConstants.Firestore.lastMessageAt to (chatListResponse.lastMessageAt
                                     ?: 0)
                             )
                         )
@@ -280,7 +280,7 @@ internal class FcChatViewModelFc(
                         loader.postValue(false)
                     })
             }).addOnFailureListener(OnFailureListener {
-                Logger.debug("onFailure: data add failed ")
+                FcLogger.debug("onFailure: data add failed ")
                 loader.postValue(false)
             })
     }
@@ -292,35 +292,35 @@ internal class FcChatViewModelFc(
     ) {
         for (i in participants) {
             FirebaseFirestore.getInstance()
-                .collection(ModUtils.getBuildVariantUsers(buildVariant))
+                .collection(FcModUtils.getBuildVariantUsers(buildVariant))
                 .document(i)
-                .collection(Constants.Firestore.chatlist)
+                .collection(FcConstants.Firestore.chatlist)
                 .document(chatId)
                 .set(lastMessageAt)
                 .addOnSuccessListener(OnSuccessListener<Void?> {
-                    Logger.debug("onSuccess: data added ")
+                    FcLogger.debug("onSuccess: data added ")
                 }).addOnFailureListener(OnFailureListener {
-                    Logger.debug("onFailed: data addition fail ")
+                    FcLogger.debug("onFailed: data addition fail ")
                 })
         }
     }
 
     fun getSingleChatData(chatId: String) {
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-        db.collection(ModUtils.getBuildVariantMessage(buildVariant))
+        db.collection(FcModUtils.getBuildVariantMessage(buildVariant))
             .document(chatId)
             .get()
             .addOnSuccessListener {
                 try {
-                    val lastMessage = it.get(Constants.Firestore.lastMessage)
-                    val lastMessageAt = it.get(Constants.Firestore.lastMessageAt)
-                    val lastMessageBy = it.get(Constants.Firestore.lastMessageBy)
-                    val messageId = it.get(Constants.Firestore.messageId)
-                    val messageType = it.get(Constants.Firestore.messageType)
+                    val lastMessage = it.get(FcConstants.Firestore.lastMessage)
+                    val lastMessageAt = it.get(FcConstants.Firestore.lastMessageAt)
+                    val lastMessageBy = it.get(FcConstants.Firestore.lastMessageBy)
+                    val messageId = it.get(FcConstants.Firestore.messageId)
+                    val messageType = it.get(FcConstants.Firestore.messageType)
                     val participants =
-                        it.get(Constants.Firestore.participants) as ArrayList<String>?
-                    val startedBy = it.get(Constants.Firestore.startedBy)
-                    val seen = it.get(Constants.Firestore.seen) as HashMap<String, String>?
+                        it.get(FcConstants.Firestore.participants) as ArrayList<String>?
+                    val startedBy = it.get(FcConstants.Firestore.startedBy)
+                    val seen = it.get(FcConstants.Firestore.seen) as HashMap<String, String>?
                     if (messageId != null) {
                         val chatList = ChatListResponse(
                             chatId = chatId,
@@ -369,22 +369,22 @@ internal class FcChatViewModelFc(
     ) {
 
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-        db.collection(Constants.Firestore.key)
-            .document(Constants.Firestore.cloud)
+        db.collection(FcConstants.Firestore.key)
+            .document(FcConstants.Firestore.cloud)
             .get()
             .addOnSuccessListener {
 
-                val serverKey = it.get(Constants.Firestore.serverKey)
+                val serverKey = it.get(FcConstants.Firestore.serverKey)
 
                 if (serverKey != null) {
 
                     val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-                    db.collection(ModUtils.getBuildVariantUsers(buildVariant))
+                    db.collection(FcModUtils.getBuildVariantUsers(buildVariant))
                         .document(otherUserid)
                         .get()
                         .addOnSuccessListener {
                             try {
-                                val otherUserFcm = it.get(Constants.Firestore.fcm)
+                                val otherUserFcm = it.get(FcConstants.Firestore.fcm)
                                 if (otherUserFcm != null) {
                                     val requestNotification = RequestNotificaton(
                                         registration_ids = arrayOf(otherUserFcm.toString()),
@@ -431,22 +431,22 @@ internal class FcChatViewModelFc(
     ) {
 
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-        db.collection(Constants.Firestore.key)
-            .document(Constants.Firestore.cloud)
+        db.collection(FcConstants.Firestore.key)
+            .document(FcConstants.Firestore.cloud)
             .get()
             .addOnSuccessListener {
 
-                val serverKey = it.get(Constants.Firestore.serverKey)
+                val serverKey = it.get(FcConstants.Firestore.serverKey)
                 if (serverKey != null) {
 
                     val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-                    db.collection(ModUtils.getBuildVariantUsers(buildVariant))
+                    db.collection(FcModUtils.getBuildVariantUsers(buildVariant))
                         .document(otherUserid)
                         .get()
                         .addOnSuccessListener {
                             try {
 
-                                val otherUserFcm = it.get(Constants.Firestore.fcm)
+                                val otherUserFcm = it.get(FcConstants.Firestore.fcm)
                                 if (otherUserFcm != null) {
                                     val requestNotification = RequestNotificaton(
                                         registration_ids = arrayOf(otherUserFcm.toString()),
@@ -457,7 +457,7 @@ internal class FcChatViewModelFc(
                                                 action = FIRECHAT_MESSAGE_SEEN,
                                                 chatId = chatId,
                                                 seen = unseenCount,
-                                                userId = MyApplication.userId
+                                                userId = FcMyApplication.userId
                                             )
                                         )
                                     )
@@ -489,9 +489,9 @@ internal class FcChatViewModelFc(
     ) {
         for (m in participants) {
             FirebaseFirestore.getInstance()
-                .collection(ModUtils.getBuildVariantUsers(buildVariant))
+                .collection(FcModUtils.getBuildVariantUsers(buildVariant))
                 .document(m)
-                .collection(Constants.Firestore.chatlist)
+                .collection(FcConstants.Firestore.chatlist)
                 .document(chatId)
                 .set(lastMessageAt)
                 .addOnSuccessListener {
@@ -505,9 +505,9 @@ internal class FcChatViewModelFc(
 
     fun checkIfUserAlreadyChatsAndGetChatId(userId: String, otherUserid: String) {
         FirebaseFirestore.getInstance()
-            .collection(ModUtils.getBuildVariantUsers(buildVariant))
+            .collection(FcModUtils.getBuildVariantUsers(buildVariant))
             .document(userId)
-            .collection(Constants.Firestore.chatlist)
+            .collection(FcConstants.Firestore.chatlist)
             .get()
             .addOnSuccessListener { querySnapshot ->
                 var gotIt = false
@@ -516,14 +516,14 @@ internal class FcChatViewModelFc(
                     val id = dc.id
 
                     FirebaseFirestore.getInstance()
-                        .collection(ModUtils.getBuildVariantMessage(buildVariant))
+                        .collection(FcModUtils.getBuildVariantMessage(buildVariant))
                         .document(id)
                         .get()
                         .addOnSuccessListener { snapshot ->
                             try {
-                                val chatId = snapshot.get(Constants.Firestore.chatId).toString()
+                                val chatId = snapshot.get(FcConstants.Firestore.chatId).toString()
                                 val participants =
-                                    snapshot.get(Constants.Firestore.participants) as ArrayList<String>?
+                                    snapshot.get(FcConstants.Firestore.participants) as ArrayList<String>?
                                 for (p in participants ?: arrayListOf()) {
                                     if (p == otherUserid) {
                                         userAlreadyExistsHereIsChatId.postValue(chatId)
@@ -551,19 +551,19 @@ internal class FcChatViewModelFc(
     fun getUserDetails(participants: List<String>) {
         val ud = hashMapOf<String, Users>()
         for (i in participants) {
-            if (MyApplication.allUserDetails[i]?.name == null
-                || MyApplication.allUserDetails[i]?.profilePicture == null
+            if (FcMyApplication.allUserDetails[i]?.name == null
+                || FcMyApplication.allUserDetails[i]?.profilePicture == null
             ) {
                 FirebaseFirestore.getInstance()
-                    .collection(ModUtils.getBuildVariantUsers(buildVariant))
+                    .collection(FcModUtils.getBuildVariantUsers(buildVariant))
                     .document(i)
                     .get()
                     .addOnSuccessListener { userDocSnapchat ->
 
-                        val id = userDocSnapchat.get(Constants.Firestore.id)?.toString()
-                        val name = userDocSnapchat.get(Constants.Firestore.name)?.toString()
+                        val id = userDocSnapchat.get(FcConstants.Firestore.id)?.toString()
+                        val name = userDocSnapchat.get(FcConstants.Firestore.name)?.toString()
                         val profilePicture =
-                            userDocSnapchat.get(Constants.Firestore.profilePicture)?.toString()
+                            userDocSnapchat.get(FcConstants.Firestore.profilePicture)?.toString()
 
                         ud[i] = Users(
                             id = id,
@@ -577,10 +577,10 @@ internal class FcChatViewModelFc(
 
                     }
                     .addOnFailureListener {
-                        Logger.error("getUserDetails: failed")
+                        FcLogger.error("getUserDetails: failed")
                     }
             } else {
-                ud[i] = MyApplication.allUserDetails[i] as Users
+                ud[i] = FcMyApplication.allUserDetails[i] as Users
 
                 if (i == participants[participants.lastIndex]) {
                     userDetails.postValue(ud)
@@ -593,14 +593,14 @@ internal class FcChatViewModelFc(
     fun decideAndMarkLastMessageAsRead(context: Context, chatId: String?, lastMessageId: String?) {
         chatId?.let {
             FirebaseFirestore.getInstance()
-                .collection(ModUtils.getBuildVariantMessage(buildVariant))
+                .collection(FcModUtils.getBuildVariantMessage(buildVariant))
                 .document(chatId)
                 .get()
                 .addOnSuccessListener {
-                    val messageId = it.get(Constants.Firestore.messageId)
-                    val seen = it.get(Constants.Firestore.seen) as HashMap<String, String>
+                    val messageId = it.get(FcConstants.Firestore.messageId)
+                    val seen = it.get(FcConstants.Firestore.seen) as HashMap<String, String>
                     if (lastMessageId == messageId) {
-                        seen[MyApplication.userId.toString()] = "0"
+                        seen[FcMyApplication.userId.toString()] = "0"
                         updateSeenValues(context, chatId, seen, true)
                     } else {
                         decideAndMarkLastMessageAsRead.postValue(null)
@@ -619,11 +619,11 @@ internal class FcChatViewModelFc(
         decideCallback: Boolean = false
     ) {
         chatId?.let {
-            MyApplication.userId?.let {
+            FcMyApplication.userId?.let {
                 FirebaseFirestore.getInstance()
-                    .collection(ModUtils.getBuildVariantMessage(buildVariant))
+                    .collection(FcModUtils.getBuildVariantMessage(buildVariant))
                     .document(chatId)
-                    .update(Constants.Firestore.seen, seen)
+                    .update(FcConstants.Firestore.seen, seen)
                     .addOnSuccessListener {
                         if (decideCallback) {
                             decideAndMarkLastMessageAsRead.postValue(
@@ -634,7 +634,7 @@ internal class FcChatViewModelFc(
                                 )
                             )
                         } else {
-                            MyApplication.otherUserId?.let { otheruserid ->
+                            FcMyApplication.otherUserId?.let { otheruserid ->
                                 markMessageSeenFCM(
                                     context = context,
                                     otherUserid = otheruserid,
@@ -655,9 +655,9 @@ internal class FcChatViewModelFc(
 
     fun getUpdatedSeenData(chatId: String?, requirement: String) {
         chatId?.let {
-            MyApplication.userId?.let {
+            FcMyApplication.userId?.let {
                 FirebaseFirestore.getInstance()
-                    .collection(ModUtils.getBuildVariantMessage(buildVariant))
+                    .collection(FcModUtils.getBuildVariantMessage(buildVariant))
                     .document(chatId)
                     .get()
                     .addOnSuccessListener {
@@ -665,11 +665,11 @@ internal class FcChatViewModelFc(
                             when (requirement) {
                                 FcMessageFragmentFc.sendMessage -> {
                                     updatedSeenDataForThisChatSendMessage
-                                        .postValue(it.get(Constants.Firestore.seen) as HashMap<String, String>)
+                                        .postValue(it.get(FcConstants.Firestore.seen) as HashMap<String, String>)
                                 }
                             }
                         } catch (e: Exception) {
-                            Logger.error(e.message.toString())
+                            FcLogger.error(e.message.toString())
                             updatedSeenDataForThisChatSendMessage.postValue(null)
                         }
                         Log.e("TAG", "markMessageAsRead: success")

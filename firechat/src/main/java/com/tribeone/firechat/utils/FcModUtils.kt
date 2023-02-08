@@ -7,7 +7,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 
-internal object ModUtils {
+internal object FcModUtils {
 
     fun forceCloseKeyboard(activity: Activity) {
         activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)

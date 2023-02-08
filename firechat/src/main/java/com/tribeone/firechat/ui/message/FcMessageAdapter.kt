@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.tribeone.firechat.MyApplication
+import com.tribeone.firechat.FcMyApplication
 import com.tribeone.firechat.databinding.FcCardChatBinding
 import com.tribeone.firechat.model.Message
-import com.tribeone.firechat.utils.ProfileUtils
-import com.tribeone.firechat.utils.TimeUtils
+import com.tribeone.firechat.utils.FcProfileUtils
+import com.tribeone.firechat.utils.FcTimeUtils
 
 internal class FcMessageAdapter(
     var context: Context,
@@ -49,7 +49,7 @@ internal class FcMessageAdapter(
         private val tvChatMe = itemview.tvChatMe
         private val ivChatPpOther = itemview.ivChatPpOther
         fun bind(message: Message) {
-            if (message.userId == MyApplication.userId) {
+            if (message.userId == FcMyApplication.userId) {
                 llChatOther.visibility = View.GONE
                 llChatMe.visibility = View.VISIBLE
                 tvChatMe.text = message.message
@@ -60,14 +60,14 @@ internal class FcMessageAdapter(
                 message.userId?.let {
                     Glide
                         .with(ivChatPpOther.context)
-                        .load(ProfileUtils.getInstance().getProfilePicture(message.userId))
+                        .load(FcProfileUtils.getInstance().getProfilePicture(message.userId))
                         .into(ivChatPpOther)
                 }
                 message.timestamp?.let {
                     val date =
-                        TimeUtils.getDatex(message.timestamp.toLong(), "yyyy-MM-dd'T'HH:mm:ss")
+                        FcTimeUtils.getDatex(message.timestamp.toLong(), "yyyy-MM-dd'T'HH:mm:ss")
                     date?.let { datex ->
-                        tvChatTimeOther.text = TimeUtils.getTimeAgo(datex)
+                        tvChatTimeOther.text = FcTimeUtils.getTimeAgo(datex)
                     }
                 }
             }

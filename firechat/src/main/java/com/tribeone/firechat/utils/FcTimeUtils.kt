@@ -6,7 +6,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-internal object TimeUtils {
+internal object FcTimeUtils {
 
     private var TAG = javaClass.simpleName
     private const val SECOND_MILLIS = 1000
