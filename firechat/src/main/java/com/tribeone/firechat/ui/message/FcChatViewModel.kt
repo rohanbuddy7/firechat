@@ -32,7 +32,7 @@ import kotlin.random.Random
 
 @SuppressLint("LogNotTimber")
 //@Inject constructor
-internal class FcChatViewModelFc(
+internal class FcChatViewModel(
     private val buildVariant: String,
     private val fcNetworkService: FcNetworkService,
 ) : FcBaseViewModel() {
@@ -663,7 +663,7 @@ internal class FcChatViewModelFc(
                     .addOnSuccessListener {
                         try {
                             when (requirement) {
-                                FcMessageFragmentFc.sendMessage -> {
+                                FcMessageFragment.sendMessage -> {
                                     updatedSeenDataForThisChatSendMessage
                                         .postValue(it.get(FcConstants.Firestore.seen) as HashMap<String, String>)
                                 }

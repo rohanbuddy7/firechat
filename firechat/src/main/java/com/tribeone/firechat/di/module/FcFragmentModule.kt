@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.tribeone.firechat.di.network.FcNetworkService
 import com.tribeone.firechat.utils.FcViewModelProviderFactory
 import com.tribeone.firechat.ui.base.FcBaseFragment
-import com.tribeone.firechat.ui.message.FcChatViewModelFc
+import com.tribeone.firechat.ui.message.FcChatViewModel
 import dagger.Module
 import dagger.Provides
 
@@ -15,14 +15,14 @@ internal class FcFragmentModule(private val fragmentFc: FcBaseFragment<*>, priva
     @Provides
     fun provideChatViewModel(
         fcNetworkService: FcNetworkService
-    ): FcChatViewModelFc =
+    ): FcChatViewModel =
         ViewModelProviders.of(
             fragmentFc,
-            FcViewModelProviderFactory(FcChatViewModelFc::class) {
-                FcChatViewModelFc(
+            FcViewModelProviderFactory(FcChatViewModel::class) {
+                FcChatViewModel(
                     buildvariant,
                     fcNetworkService
                 )
-            })[FcChatViewModelFc::class.java]
+            })[FcChatViewModel::class.java]
 
 }

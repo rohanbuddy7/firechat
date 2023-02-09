@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication" >
 
-        <activity android:name=".ui.main.FcHomeActivityFc"
+        <activity android:name=".ui.main.FcHomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

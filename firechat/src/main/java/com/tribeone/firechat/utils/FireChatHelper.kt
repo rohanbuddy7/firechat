@@ -6,7 +6,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tribeone.firechat.model.Users
-import com.tribeone.firechat.ui.main.FcHomeActivityFc
+import com.tribeone.firechat.ui.main.FcHomeActivity
 
 class FireChatHelper private constructor() {
 
@@ -38,7 +38,7 @@ class FireChatHelper private constructor() {
             if(user.id.isNullOrEmpty()){
                 FireChatErrors.crashIt(FireChatErrors.USER_ID_NULL)
             }
-            FcHomeActivityFc.openChat(user, activity, chatId)
+            FcHomeActivity.openChat(user, activity, chatId)
         }
     }
 
@@ -47,7 +47,7 @@ class FireChatHelper private constructor() {
             if(user.id.isNullOrEmpty()){
                 FireChatErrors.crashIt(FireChatErrors.USER_ID_NULL)
             }
-            FcHomeActivityFc.startDistinctConversation(user, otherUserId, activity)
+            FcHomeActivity.startDistinctConversation(user, otherUserId, activity)
         }
     }
 

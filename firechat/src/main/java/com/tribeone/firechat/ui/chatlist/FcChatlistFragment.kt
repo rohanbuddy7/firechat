@@ -19,9 +19,9 @@ import com.tribeone.firechat.di.component.FcFragmentComponent
 import com.tribeone.firechat.model.ChatListResponse
 import com.tribeone.firechat.model.UpdateChatList
 import com.tribeone.firechat.ui.base.FcBaseFragment
-import com.tribeone.firechat.ui.message.FcChatViewModelFc
-import com.tribeone.firechat.ui.main.FcHomeActivityFc
-import com.tribeone.firechat.ui.message.FcMessageFragmentFc
+import com.tribeone.firechat.ui.message.FcChatViewModel
+import com.tribeone.firechat.ui.main.FcHomeActivity
+import com.tribeone.firechat.ui.message.FcMessageFragment
 import com.tribeone.firechat.utils.*
 import com.tribeone.firechat.utils.FcConstants.FCM.FIRECHAT_MESSAGE_SEEN
 import com.tribeone.firechat.utils.FcConstants.FCM.FIRECHAT_NEW_MESSAGE
@@ -30,7 +30,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import kotlin.collections.ArrayList
 
-internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcChatlistAdapter.OnClickListener {
+internal class FcChatlistFragment : FcBaseFragment<FcChatViewModel>(), FcChatlistAdapter.OnClickListener {
 
     private var once: Boolean = true
     private var onceObserver: Boolean = true
@@ -95,11 +95,11 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
             binding?.rvChatlist?.adapter = adapterFc
 
             binding?.tvStartchat?.setOnClickListener {
-                (activity as FcHomeActivityFc).showChat(null)
+                (activity as FcHomeActivity).showChat(null)
             }
 
             binding?.ivChatListBack?.setOnClickListener {
-                (requireActivity() as FcHomeActivityFc).onBackPressed()
+                (requireActivity() as FcHomeActivity).onBackPressed()
             }
 
             binding?.pullToRefresh?.setOnRefreshListener {
@@ -189,7 +189,7 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
         if (chatId != null) {
             val chatListResponse = adapterFc?.getData()?.find { it?.chatId == chatId }
             chatListResponse?.let {
-                (activity as FcHomeActivityFc).showChat(it)
+                (activity as FcHomeActivity).showChat(it)
                 chatId = null
             }
         }
@@ -202,7 +202,7 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
     }
 
     override fun onClick(position: Int, chatListResponse: ChatListResponse?) {
-        (activity as FcHomeActivityFc).showChat(chatListResponse)
+        (activity as FcHomeActivity).showChat(chatListResponse)
     }
 
     private fun initBroadcastAndOthers() {
@@ -240,8 +240,8 @@ internal class FcChatlistFragmentFc : FcBaseFragment<FcChatViewModelFc>(), FcCha
             }
         }
 
-        setFragmentResultListener(FcMessageFragmentFc.MESSAGE_FRAGMENT_BACK) { reqKey, bundle ->
-            if (reqKey == FcMessageFragmentFc.MESSAGE_FRAGMENT_BACK) {
+        setFragmentResultListener(FcMessageFragment.MESSAGE_FRAGMENT_BACK) { reqKey, bundle ->
+            if (reqKey == FcMessageFragment.MESSAGE_FRAGMENT_BACK) {
                 val chatId = bundle.getString(FcConstants.Firestore.chatId)
                 val lastMessageId = bundle.getString(FcConstants.Firestore.lastMessageId)
                 markMessageAsRead(chatId)

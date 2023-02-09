@@ -26,12 +26,12 @@ import com.tribeone.firechat.model.ChatListResponse
 import com.tribeone.firechat.model.Message
 import com.tribeone.firechat.model.UpdateChatList
 import com.tribeone.firechat.ui.base.FcBaseFragment
-import com.tribeone.firechat.ui.chatlist.FcChatlistFragmentFc
-import com.tribeone.firechat.ui.main.FcHomeActivityFc
+import com.tribeone.firechat.ui.chatlist.FcChatlistFragment
+import com.tribeone.firechat.ui.main.FcHomeActivity
 import com.tribeone.firechat.utils.*
 
 @SuppressLint("LogNotTimber")
-internal class FcMessageFragmentFc : FcBaseFragment<FcChatViewModelFc>(),
+internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
     FcMessageAdapter.OnClickListener {
 
     companion object {
@@ -174,7 +174,7 @@ internal class FcMessageFragmentFc : FcBaseFragment<FcChatViewModelFc>(),
             putString(FcConstants.Firestore.lastMessageId, recentMessage?.messageId)
         }
         setFragmentResult(MESSAGE_FRAGMENT_BACK, resultBundle)
-        (requireActivity() as FcHomeActivityFc).onBackPressed()
+        (requireActivity() as FcHomeActivity).onBackPressed()
     }
 
     private fun sendMessage() {
@@ -353,7 +353,7 @@ internal class FcMessageFragmentFc : FcBaseFragment<FcChatViewModelFc>(),
         chatListResponse?.seen = seen
         try {
             chatListResponse?.let {
-                (parentFragment as FcChatlistFragmentFc).adapterFc?.updateSingleChat(it)
+                (parentFragment as FcChatlistFragment).adapterFc?.updateSingleChat(it)
             }
         } catch (e: Exception) {
             FcLogger.error(e.toString())

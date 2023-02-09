@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/chatlistFragment"
-        android:name="com.tribeone.firechat.ui.chatlist.FcChatlistFragmentFc"
+        android:name="com.tribeone.firechat.ui.chatlist.FcChatlistFragment"
         android:label="ChatlistFragment"
         tools:layout="@layout/fc_fragment_chatlist"/>
     <fragment
         android:id="@+id/messageFragment"
-        android:name="com.tribeone.firechat.ui.message.FcMessageFragmentFc"
+        android:name="com.tribeone.firechat.ui.message.FcMessageFragment"
         android:label="MessageFragment"
         tools:layout="@layout/fc_fragment_chat"/>
 </navigation>
