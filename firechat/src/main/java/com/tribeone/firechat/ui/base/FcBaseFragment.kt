@@ -32,7 +32,7 @@ internal abstract class FcBaseFragment<VM: FcBaseViewModel>: Fragment() {
     private fun buildFragmentComponent() =
         DaggerFcFragmentComponent
             .builder()
-            .fcApplicationComponent((requireActivity().applicationContext as FcMyApplication).fcApplicationComponent)
+            .fcApplicationComponent(FcMyApplication.fcApplicationComponent)
             .fcFragmentModule(FcFragmentModule(this, setBuildVariant()))
             .build()
 

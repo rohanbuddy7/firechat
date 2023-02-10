@@ -353,8 +353,12 @@ internal class FcChatViewModel(
                 contentType = "application/json",
                 requestNotificaton = requestNotificaton
             )
+            Log.d("TAG: fcm isSuccessful:", result?.isSuccessful.toString())
+            if(result?.isSuccessful==false){
+                Log.d("TAG: fcm error", result.errorBody().toString())
+            }
             if (result != null) {
-                Log.d("TAG: result ", result.body().toString())
+                Log.d("TAG: result: ", result.body().toString())
             }
         }
     }

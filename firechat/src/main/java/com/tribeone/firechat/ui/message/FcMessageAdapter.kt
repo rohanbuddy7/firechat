@@ -58,10 +58,14 @@ internal class FcMessageAdapter(
                 llChatMe.visibility = View.GONE
                 tvChatOther.text = message.message
                 message.userId?.let {
-                    Glide
-                        .with(ivChatPpOther.context)
-                        .load(FcProfileUtils.getInstance().getProfilePicture(message.userId))
-                        .into(ivChatPpOther)
+                    FcProfileUtils.getInstance().getProfilePicture(message.userId)?.let { profilePic ->
+                        if (profilePic.trim().isNotEmpty()) {
+                            Glide
+                                .with(ivChatPpOther.context)
+                                .load(profilePic)
+                                .into(ivChatPpOther)
+                        }
+                    }
                 }
                 message.timestamp?.let {
                     val date =

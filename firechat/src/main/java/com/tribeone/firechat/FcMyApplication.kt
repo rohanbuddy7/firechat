@@ -8,11 +8,8 @@ import dagger.Component
 
 internal class FcMyApplication: Application() {
 
-    lateinit var fcApplicationComponent: FcApplicationComponent
-
-    var component: Component? = null
-
     companion object{
+        lateinit var fcApplicationComponent: FcApplicationComponent
         var user: Users? = null
         var userId: String? = ""
         var otherUserId: String? = ""

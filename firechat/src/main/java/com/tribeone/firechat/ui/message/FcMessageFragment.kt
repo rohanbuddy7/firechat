@@ -98,8 +98,10 @@ internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
                         FcProfileUtils.getInstance().getProfilePicture(c.participants[i])
 
                     binding?.tvChatName?.text = name
-                    binding?.ivChatProfileImage?.let {
-                        Glide.with(this).load(profilePic).into(it)
+                    if (profilePic != null && profilePic.trim().isNotEmpty()) {
+                        binding?.ivChatProfileImage?.let {
+                            Glide.with(this).load(profilePic).into(it)
+                        }
                     }
                     FcMyApplication.otherUserId = c.participants[i]
                     break
@@ -149,7 +151,7 @@ internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
 
         LocalBroadcastManager
             .getInstance(requireContext())
-            .registerReceiver(mMessageReceiver, IntentFilter( FcConstants.FCM.FIRECHAT_BROADCAST));
+            .registerReceiver(mMessageReceiver, IntentFilter(FcConstants.FCM.FIRECHAT_BROADCAST));
 
         binding?.ivChatBack?.setOnClickListener {
             onbackPress()
@@ -170,7 +172,7 @@ internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
         val resultBundle = Bundle().apply {
             putString(FcConstants.Firestore.chatId, chatId)
             val recentMessage = adapterFc?.getRecentlyAddedMessage()
-            FcLogger.debug(recentMessage?.message?:"")
+            FcLogger.debug(recentMessage?.message ?: "")
             putString(FcConstants.Firestore.lastMessageId, recentMessage?.messageId)
         }
         setFragmentResult(MESSAGE_FRAGMENT_BACK, resultBundle)
@@ -195,8 +197,8 @@ internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
     private fun markMessageAsRead() {
         FcMyApplication.userId?.let {
             //if (chatListResponse?.seen?.get(MyApplication.userId!!) != "0") {
-                chatListResponse?.seen?.set(FcMyApplication.userId!!, "0")
-                viewModel.updateSeenValues(requireContext(), chatId, chatListResponse?.seen)
+            chatListResponse?.seen?.set(FcMyApplication.userId!!, "0")
+            viewModel.updateSeenValues(requireContext(), chatId, chatListResponse?.seen)
             //}
         }
     }
@@ -339,7 +341,7 @@ internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
         })
 
         viewModel.updatedSeenDataForThisChatSendMessage.observe(this, Observer {
-            if(it == null) {
+            if (it == null) {
                 sendMessage()
             } else {
                 updateSeenDataLocally(it)
@@ -349,7 +351,7 @@ internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
 
     }
 
-    private fun updateSeenDataLocally(seen: HashMap<String,String>){
+    private fun updateSeenDataLocally(seen: HashMap<String, String>) {
         chatListResponse?.seen = seen
         try {
             chatListResponse?.let {
@@ -368,7 +370,7 @@ internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
 
     }
 
-    fun onBackPressedDetectorForDialogFragment(){
+    fun onBackPressedDetectorForDialogFragment() {
         requireView().isFocusableInTouchMode = true
         requireView().requestFocus()
         requireView().setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
@@ -401,13 +403,13 @@ internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
                         val _userId = intent.getStringExtra(FcConstants.FCMParams.userId)
                         _chatId?.let {
                             _userId?.let {
-                                if(_chatId == chatId){
+                                if (_chatId == chatId) {
                                     chatListResponse?.seen?.set(_userId.toString(), "0")
                                     chatListResponse?.seen?.let {
                                         updateSeenDataLocally(it)
                                     }
                                 }
-                            }?: kotlin.run {
+                            } ?: kotlin.run {
                                 FcLogger.debug("userId is null")
                             }
                         } ?: kotlin.run {
@@ -420,4 +422,4 @@ internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
     }
 
 
-    }
+}

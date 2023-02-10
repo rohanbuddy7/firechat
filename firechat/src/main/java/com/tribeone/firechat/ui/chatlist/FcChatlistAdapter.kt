@@ -38,7 +38,8 @@ internal class FcChatlistAdapter(
         return data.size
     }
 
-    internal class ViewHolder(itemView: FcCardChatListBinding) : RecyclerView.ViewHolder(itemView.root) {
+    internal class ViewHolder(itemView: FcCardChatListBinding) :
+        RecyclerView.ViewHolder(itemView.root) {
         private val tvNameChatList = itemView.tvNameChatList
         private val ivDpChatList = itemView.ivDpChatList
         private val tvMessageChatList = itemView.tvMessageChatList
@@ -55,11 +56,15 @@ internal class FcChatlistAdapter(
                 c.participants?.let {
                     for (i in it.indices) {
                         if (FcMyApplication.userId != c.participants[i]) {
-                            val name: String = FcProfileUtils.getInstance().getName(c.participants[i])
-                            val profilePic: String? = FcProfileUtils.getInstance().getProfilePicture(c.participants[i])
+                            val name: String =
+                                FcProfileUtils.getInstance().getName(c.participants[i])
+                            val profilePic: String? =
+                                FcProfileUtils.getInstance().getProfilePicture(c.participants[i])
 
                             tvNameChatList.text = name
-                            Glide.with(context).load(profilePic).into(ivDpChatList)
+                            if (profilePic != null && profilePic.trim().isNotEmpty()) {
+                                Glide.with(context).load(profilePic).into(ivDpChatList)
+                            }
                             break
                         }
                     }
@@ -119,7 +124,7 @@ internal class FcChatlistAdapter(
         }
     }
 
-    fun getData(): ArrayList<ChatListResponse?>{
+    fun getData(): ArrayList<ChatListResponse?> {
         return data
     }
 
