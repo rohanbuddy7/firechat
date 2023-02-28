@@ -20,4 +20,5 @@ internal class InternalData (
     var chatId: String? = null,
     var seen: String? = null,
     var userId: String? = null,
+    var name: String? = null,
 )

@@ -94,6 +94,7 @@ class FireChatHelper private constructor() {
             unseenCount: String,
             chatId: String,
             action: String,
+            name: String,
         )
     }
 

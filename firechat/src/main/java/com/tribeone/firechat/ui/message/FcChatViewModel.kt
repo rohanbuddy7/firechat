@@ -355,7 +355,7 @@ internal class FcChatViewModel(
             )
             Log.d("TAG: fcm isSuccessful:", result?.isSuccessful.toString())
             if(result?.isSuccessful==false){
-                Log.d("TAG: fcm error", result.errorBody().toString())
+                Log.d("TAG: fcm error", result.code().toString())
             }
             if (result != null) {
                 Log.d("TAG: result: ", result.body().toString())
@@ -370,6 +370,7 @@ internal class FcChatViewModel(
         chatId: String,
         message: String,
         unseenCount: String,
+        name: String,
     ) {
 
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -400,7 +401,8 @@ internal class FcChatViewModel(
                                                 message = message,
                                                 action = FIRECHAT_NEW_MESSAGE,
                                                 chatId = chatId,
-                                                seen = unseenCount
+                                                seen = unseenCount,
+                                                name = name
                                             )
                                         )
                                     )
@@ -431,7 +433,7 @@ internal class FcChatViewModel(
         context: Context,
         otherUserid: String,
         chatId: String,
-        unseenCount: String,
+        unseenCount: String
     ) {
 
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -461,7 +463,7 @@ internal class FcChatViewModel(
                                                 action = FIRECHAT_MESSAGE_SEEN,
                                                 chatId = chatId,
                                                 seen = unseenCount,
-                                                userId = FcMyApplication.userId
+                                                userId = FcMyApplication.userId,
                                             )
                                         )
                                     )

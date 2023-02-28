@@ -309,7 +309,8 @@ internal class FcMessageFragment : FcBaseFragment<FcChatViewModel>(),
                         otherUserid = otheruserid,
                         chatId = chatid,
                         message = messageAndSeen.message?.message ?: "",
-                        unseenCount = messageAndSeen.seen?.get(otheruserid).toString()
+                        unseenCount = messageAndSeen.seen?.get(otheruserid).toString(),
+                        name = binding?.tvChatName?.text?.toString()?:""
                     )
                 }
             }
