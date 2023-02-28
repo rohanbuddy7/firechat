@@ -54,6 +54,7 @@ internal object FcConstants {
         const val title = "title"
         const val message = "message"
         const val action = "action"
+        const val name = "name"
         const val chatId = "chatId"
         const val userId = "userId"
         const val seen = "seen"

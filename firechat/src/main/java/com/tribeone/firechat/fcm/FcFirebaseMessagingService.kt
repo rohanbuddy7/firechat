@@ -78,7 +78,8 @@ internal class FcFirebaseMessagingService : FirebaseMessagingService() {
                             jsonObject.getString(FcConstants.FCMParams.message),
                             jsonObject.getString(FcConstants.FCMParams.seen),
                             jsonObject.getString(FcConstants.FCMParams.chatId),
-                            jsonObject.getString(FcConstants.FCMParams.action)
+                            jsonObject.getString(FcConstants.FCMParams.action),
+                            jsonObject.getString(FcConstants.FCMParams.name)
                         )
 
                     } catch (e: JSONException) {
