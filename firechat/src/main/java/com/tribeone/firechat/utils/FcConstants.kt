@@ -1,6 +1,6 @@
 package com.tribeone.firechat.utils
 
-object FcConstants {
+internal object FcConstants {
 
     object Firestore {
         const val fcm = "fcm"
