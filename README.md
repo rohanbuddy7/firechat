@@ -41,7 +41,7 @@ allprojects {
 Step 2. Add the dependency
 ```ruby
 dependencies {
-    implementation 'com.github.rohanbuddy7:firechat:1.0.2'
+    implementation 'com.github.rohanbuddy7:firechat:1.0.29'
 }
 ```
 That's it! The first time you request a project JitPack checks out the code, builds it and serves the build artifacts (jar, aar).
