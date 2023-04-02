@@ -12,7 +12,12 @@ Firechat is fast and easy to integrate messsaging android SDK which lets you cha
 - Enable Cloud Messaging API (Legacy) from firebase panel and copy the server token. Add it in your firestore like this:
 
         (key>cloud>serverKey=**your server token**)
-
+ 
+- add this in proguard-rules.pro  
+```ruby
+        -keep class com.tribeone.firechat.model.** { *; }
+	-keep class com.tribeone.firechat.di.Request.** { *; }
+```
 
 <h2>Download</h2>
 
